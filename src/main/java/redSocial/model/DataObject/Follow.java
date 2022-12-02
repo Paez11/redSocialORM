@@ -1,4 +1,4 @@
-package redSocial.model;
+package redSocial.model.DataObject;
 
 public class Follow {
     private int id;

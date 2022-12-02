@@ -1,6 +1,4 @@
-package redSocial.model;
-
-import javafx.geometry.Pos;
+package redSocial.model.DataObject;
 
 import java.util.Date;
 import java.util.Objects;
