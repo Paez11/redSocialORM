@@ -1,0 +1,193 @@
+.fondo{
+    -fx-background-color: #395569;
+}
+
+.colorTransparent{
+    -fx-border-color: transparent;
+}
+
+.menuColor{
+    -fx-background-color: #49617a;
+}
+
+.postColor{
+    -fx-background-color: #EEEEEE;
+}
+
+.post{
+    -fx-font-style: normal;
+    -fx-font-family: "Roboto Thin";
+    -fx-text-fill: black;
+}
+
+.commentColor{
+    -fx-background-color: #bdbdbd;
+}
+.comment{
+    -fx-font-style: normal;
+    -fx-font-family: "Roboto Light";
+    -fx-text-fill: black;
+}
+
+
+.search-bar{
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-color-label-visible: white;
+    -fx-text-fill: white;
+}
+
+.profile-photo{
+    -fx-border-radius: 100;
+}
+
+
+.text-field{
+    -fx-border-radius: 20;
+    -fx-border-width: 0 0 0 0;
+}
+
+.menuButton{
+    -fx-border-radius: 5;
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff73;
+    -fx-background-size: 20pt;
+    -fx-cursor: hand;
+}
+
+.menuButton:hover{
+    -fx-background-color: #ffffff3b;
+}
+
+.menuButton:pressed{
+    -fx-background-color: #91fce4;
+}
+
+.menuButton:focused{
+    -fx-border-color: #91fce4;
+    -fx-border-width: 2;
+    -fx-text-fill: white;
+}
+
+.profileButton{
+    -fx-border-radius: 50;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.selectButton{
+    -fx-background-color: #395569;
+    -fx-text-fill: white;
+    -fx-font-size: 12 pt;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5;
+}
+
+.selectButton:hover{
+    -fx-background-color: rgba(122, 122, 122, 0.26);
+}
+
+.deleteButton{
+    -fx-background-color: #d00000;
+    -fx-text-fill: white;
+    -fx-font-size: 12 pt;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5;
+}
+
+.deleteButton:hover{
+    -fx-background-color: rgba(182, 182, 182, 0.26);
+}
+
+.buttonR{
+    -fx-border-radius: 5;
+    -fx-border-color: #B4FFF9;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+.buttonR:hover{
+    -fx-background-color: rgba(176, 176, 176, 0.24);
+}
+.buttonR:pressed{
+    -fx-background-color: #B4FFF9;
+}
+
+.scroll-pane{
+    -fx-background-color: #e6e7f3;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+    -fx-background-color: transparent;
+}
+.increment-button, .decrement-button{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb{
+    --fx-background-radius: 0em;
+}
+
+.table-view{
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-border-color: #49617a;
+    -fx-border-width: 0 0 0 1px;
+}
+.table-view .row-header-background .filler {
+    -fx-background-color: rgba(0, 0, 0, 0);
+}
+.table-view .corner {
+    -fx-background-color: transparent;
+}
+.table-view .column-header-background{
+    -fx-background-color: #49617a;
+    -fx-text-fill: white;
+    -fx-background-insets: 0 0px 0 0;
+}
+.table-view .column-header{
+    -fx-text-fill: white;
+}
+
+.table-view .table-cell{
+    -fx-border-color: transparent;
+    -fx-text-fill: #000000;
+
+}
+
+.table-row-cell:hover {
+    -fx-background-color: rgba(182, 182, 182, 0.26);
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.table-row-cell:pressed {
+    -fx-background-color: #75fff2;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.table-row-cell:odd{
+    -fx-border-width: 3px 0 0 0;
+    -fx-text-fill: #000000;
+}
+
+.table-row-cell:even{
+    -fx-border-width: 3px 0 0 0;
+    -fx-text-fill: #000000;
+}
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}

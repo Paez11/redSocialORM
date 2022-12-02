@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="163.0" prefWidth="520.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="redSocial.controllers.CommentC">
+    <children>
+        <Button fx:id="profilePhotoComment" mnemonicParsing="false" onAction="#switchProfile" prefHeight="70.0" prefWidth="72.0" styleClass="profileButton">
+            <graphic>
+                <ImageView fx:id="profileImage" fitHeight="45.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../user.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Label fx:id="name" layoutX="77.0" layoutY="14.0" prefHeight="21.0" prefWidth="303.0" styleClass="comment" text="user">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <ScrollPane layoutX="77.0" layoutY="42.0" prefHeight="114.0" prefWidth="420.0">
+         <content>
+              <Label fx:id="comment2" alignment="TOP_LEFT" prefHeight="110.0" prefWidth="411.0" text="Comentario">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+         </content>
+      </ScrollPane>
+        <Label fx:id="date" layoutX="405.0" layoutY="15.0" prefHeight="20.0" prefWidth="111.0" text="Fecha" />
+    </children>
+   <styleClass>
+      <String fx:value="postColor" />
+      <String fx:value="comment" />
+   </styleClass>
+</AnchorPane>
