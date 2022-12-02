@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import redSocial.DAO.CommentDao;
 import redSocial.DAO.UserDao;
-import redSocial.model.Comment;
+import redSocial.model.DataObject.Comment;
 
 import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;

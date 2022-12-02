@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import redSocial.DAO.PostDao;
 import redSocial.DAO.UserDao;
-import redSocial.model.User;
+import redSocial.model.DataObject.User;
 import redSocial.utils.Log;
 import redSocial.utils.Windows;
 

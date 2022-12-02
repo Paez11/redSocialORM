@@ -1,4 +1,4 @@
-package redSocial.model;
+package redSocial.model.DataObject;
 
 import java.util.List;
 import java.util.Objects;
