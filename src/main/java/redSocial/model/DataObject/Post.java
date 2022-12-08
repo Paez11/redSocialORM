@@ -1,18 +1,49 @@
 package redSocial.model.DataObject;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class Post {
-    protected User userName;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+@Entity
+@Table(name = "POST")
+@XmlRootElement
+public class Post implements Serializable {
+	private static final long serialVersionUID = 1L;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID_POST")
     protected int id;
+	@JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+	protected User userName;
+	@Basic(optional = false)
+    @Column(name = "DATE_CREATE")
     protected Date dateCreate;
+    @Column(name = "DATE_UPDATE")
     protected Date dateUpdate;
+    @Column(name = "TEXT")
     protected String text;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idComment", fetch = FetchType.LAZY)
     protected List<Comment> comments;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser", fetch = FetchType.LAZY)
     protected Set<User> likes;
 
     public Post() {
