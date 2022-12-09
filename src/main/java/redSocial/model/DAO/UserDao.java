@@ -1,6 +1,5 @@
 package redSocial.model.DAO;
 
-import redSocial.interfaces.Dao;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Connection.Connect;
 import redSocial.utils.Log;
@@ -12,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.List;
 
-public class UserDao extends User implements Dao {
+public class UserDao extends User{
     private static Connection con = null;
 
     private final static String INSERT = "INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)";
@@ -44,7 +43,6 @@ public class UserDao extends User implements Dao {
         this.getById(id);
     }
 
-    @Override
     public void save() {
         con = Connect.getConnect();
         if (con != null){
@@ -61,7 +59,6 @@ public class UserDao extends User implements Dao {
         }
     }
 
-    @Override
     public void delete() {
         con = Connect.getConnect();
         if (con != null){
@@ -77,7 +74,6 @@ public class UserDao extends User implements Dao {
         }
     }
 
-    @Override
     public void update() {
         con = Connect.getConnect();
         if (con != null){

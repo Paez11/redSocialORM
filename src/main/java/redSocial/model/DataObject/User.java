@@ -1,17 +1,35 @@
 package redSocial.model.DataObject;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
 
-public class User {
+@Entity
+@Table(name = "user")
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "id")
     protected int id;
+    @Column(name = "nombre")
     protected String name;
+    @Column(name = "password")
     protected String password;
+    @Column(name = "avatar", columnDefinition = "LONGBLOB")
     protected byte[] avatar;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
     protected List<Post> posts;
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user")
     protected List<Comment> comments;
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user")
     protected List<Post> likes;
+
     protected List<User> followed;
+
     protected List<User> follower;
 
     public User() {
