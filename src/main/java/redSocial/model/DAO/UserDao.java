@@ -1,10 +1,12 @@
 package redSocial.model.DAO;
 
-import redSocial.interfaces.Dao;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Connection.Connect;
 import redSocial.utils.Log;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,8 +14,11 @@ import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.List;
 
-public class UserDao extends User implements Dao {
+public class UserDao extends User{
     private static Connection con = null;
+
+    private static EntityManager manager;
+    private static EntityManagerFactory emf=Persistence.createEntityManagerFactory("MySQL");
 
     private final static String INSERT = "INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)";
     private final static String DELETE = "DELETE FROM user WHERE id=?";
@@ -44,88 +49,64 @@ public class UserDao extends User implements Dao {
         this.getById(id);
     }
 
-    @Override
     public void save() {
-        con = Connect.getConnect();
-        if (con != null){
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
             try {
-                PreparedStatement st = con.prepareStatement(INSERT,Statement.RETURN_GENERATED_KEYS);
-                st.setString(1,this.name);
-                st.setString(2,this.password);
-                st.setBinaryStream(3, new ByteArrayInputStream(this.avatar), this.avatar.length);
-                st.executeUpdate();
-                st.close();
-            } catch (SQLException e) {
+                manager.createQuery("INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)")
+                        .setParameter(1, this.getName())
+                        .setParameter(2, this.getPassword())
+                        .setParameter(3, this.getAvatar());
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
                 Log.severe("Error al insertar usuario: " + e.getMessage());
             }
-        }
     }
 
-    @Override
     public void delete() {
-        con = Connect.getConnect();
-        if (con != null){
-            PreparedStatement st = null;
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
             try {
-                st = con.prepareStatement(DELETE);
-                st.setInt(1,this.id);
-                st.executeUpdate();
-                st.close();
-            } catch (SQLException e) {
+                manager.createQuery("DELETE FROM user WHERE id=?")
+                        .setParameter(1, this.getId());
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
                 Log.severe("Error al eliminar usuario: " + e.getMessage());
             }
-        }
     }
 
-    @Override
     public void update() {
-        con = Connect.getConnect();
-        if (con != null){
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
             try {
-                PreparedStatement st = con.prepareStatement(UPDATE);
-                st.setInt(4,this.id);
-                st.setString(1,name);
-                st.setString(2,password);
-                try {
-                    File imageBlob = new File(new String(this.avatar));
-                    FileInputStream in = new FileInputStream(imageBlob);
-                    st.setBinaryStream(3,in,(int)imageBlob.length());
-                } catch (FileNotFoundException e) {
-                    st.setBinaryStream(3, new ByteArrayInputStream(this.avatar), this.avatar.length);
-                }
-                st.executeUpdate();
-                st.close();
-            } catch (SQLException e) {
+                manager.createQuery("UPDATE user SET name=?, password=?, avatar=? WHERE id=?")
+                        .setParameter(1, this.getName())
+                        .setParameter(2, this.getPassword())
+                        .setParameter(3, this.getAvatar())
+                        .setParameter(4, this.getId());
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
                 Log.severe("Error al actualizar usuario: " + e.getMessage());
             }
-        }
     }
 
     public User getById(int id){
         UserDao user = new UserDao(id,name,password,avatar);
         if (id!=-1){
-            con = Connect.getConnect();
-            if (con != null){
-                try {
-                    PreparedStatement st = st = con.prepareStatement(SELECTBYID);
-                    st.setInt(1,id);
-                    if (st.execute()){
-                        ResultSet rs = st.getResultSet();
-                        if (rs.next()){
-                            user.id=rs.getInt(1);
-                            user.name = rs.getString("name");
-                            user.password = rs.getString("password");
-                            Blob imageBlob = rs.getBlob("avatar");
-                            byte[] bdata = imageBlob.getBytes(1, (int) imageBlob.length());
-                            user.avatar = bdata;
-
-                        }
-                        rs.close();
-                    }
-                    st.close();
-                } catch (SQLException e) {
-                    Log.severe("Error al obtener usuario: " + e.getMessage());
-                }
+            manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            try {
+                user = manager.createQuery("SELECT id,name,password,avatar FROM user WHERE id=?",UserDao.class)
+                        .setParameter(1, id)
+                        .getSingleResult();
+                manager.persist(user);
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
+                Log.severe("Error al obtener usuario: " + e.getMessage());
             }
         }
         return user;
@@ -133,60 +114,34 @@ public class UserDao extends User implements Dao {
 
     public User getByName(String name){
         UserDao user = new UserDao(id,name,password,avatar);
-        con = Connect.getConnect();
-        if (con != null){
-
+        if (name!=null){
+            manager = emf.createEntityManager();
+            manager.getTransaction().begin();
             try {
-                PreparedStatement st = con.prepareStatement(SELECTBYNAME);
-                st.setString(1,name);
-                if (st.execute()){
-                    ResultSet rs = st.getResultSet();
-                    if (rs.next()){
-                        this.name=rs.getString("name");
-                        this.id = rs.getInt("id");
-                        this.password = rs.getString("password");
-                        Blob imageBlob = rs.getBlob("avatar");
-                        byte[] bdata = imageBlob.getBytes(1, (int) imageBlob.length());
-                        this.avatar = bdata;
-
-                    }
-                    rs.close();
-                }
-                st.close();
-            } catch (SQLException e) {
+                user = manager.createQuery("SELECT id,name,password,avatar FROM user WHERE name=?",UserDao.class)
+                        .setParameter(1, name)
+                        .getSingleResult();
+                manager.persist(user);
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
                 Log.severe("Error al obtener usuario: " + e.getMessage());
             }
         }
-        user.setName(this.name);
-        user.setId(this.id);
-        user.setPassword(this.password);
-        user.setAvatar(this.avatar);
         return user;
     }
 
     private List<User> getAllUsers(){
         List<User> users = null;
-        con = Connect.getConnect();
-        if (con != null){
-            PreparedStatement st = null;
-            try {
-                st = con.prepareStatement(SELECTALL);
-                if (st.execute()){
-                    ResultSet rs = st.getResultSet();
-                    while (rs.next()){
-                        Blob imageBlob = rs.getBlob("avatar");
-                        byte[] bdata = imageBlob.getBytes(1, (int) imageBlob.length());
-                        avatar = bdata;
-                        User u = new User(rs.getInt("id"),rs.getString("name"),
-                                rs.getString("avatar").getBytes());
-                        users.add(u);
-                    }
-                    rs.close();
-                }
-                st.close();
-            } catch (SQLException e) {
-                Log.severe("Error al obtener usuarios: " + e.getMessage());
-            }
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+        try {
+            users = manager.createQuery("SELECT id,name,avatar FROM user").getResultList();
+            manager.persist(users);
+            manager.getTransaction().commit();
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al obtener usuarios: " + e.getMessage());
         }
         return users;
     }

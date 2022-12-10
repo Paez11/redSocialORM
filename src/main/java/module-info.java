@@ -10,6 +10,7 @@ module es.iesfranciscodelosrios.redSocial {
     requires java.xml.bind;
     requires java.sql;
     requires java.sql.rowset;
+    requires java.persistence;
 
     opens redSocial.controllers to javafx.fxml;
     opens redSocial.utils.Connection to java.xml.bind;

@@ -10,8 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import redSocial.DAO.CommentDao;
-import redSocial.DAO.PostDao;
+import redSocial.model.DAO.CommentDao;
 import redSocial.model.DataObject.Comment;
 import redSocial.utils.Log;
 

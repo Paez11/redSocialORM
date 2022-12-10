@@ -1,6 +1,5 @@
 package redSocial.model.DAO;
 
-import redSocial.interfaces.Dao;
 import redSocial.model.DataObject.Comment;
 import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CommentDao extends Comment implements Dao {
+public class CommentDao extends Comment{
 
     private static Connection con = null;
 
@@ -33,7 +32,6 @@ public class CommentDao extends Comment implements Dao {
         super();
     }
 
-    @Override
     public void save() {
         //INSERT
         con = Connect.getConnect();
@@ -58,7 +56,6 @@ public class CommentDao extends Comment implements Dao {
         }
     }
 
-    @Override
     public void delete() {
         con = Connect.getConnect();
         if (con != null){
@@ -76,7 +73,6 @@ public class CommentDao extends Comment implements Dao {
         }
 }
 
-    @Override
     public void update() {
         con = Connect.getConnect();
         if (con != null){

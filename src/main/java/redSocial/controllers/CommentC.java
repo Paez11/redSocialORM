@@ -7,8 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import redSocial.DAO.CommentDao;
-import redSocial.DAO.UserDao;
+import redSocial.model.DAO.CommentDao;
+import redSocial.model.DAO.UserDao;
 import redSocial.model.DataObject.Comment;
 
 import java.io.ByteArrayInputStream;

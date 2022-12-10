@@ -1,6 +1,5 @@
 package redSocial.model.DAO;
 
-import redSocial.interfaces.Dao;
 import redSocial.model.DataObject.Comment;
 import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
@@ -14,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PostDao extends Post implements Dao {
+public class PostDao extends Post{
 
     private final static String INSERT = "INSERT INTO post (id,id_user,fecha_creacion,texto) VALUES (NULL,?,?,?)";
     private final static String UPDATE = "UPDATE post SET fecha_modificacion=?,texto=? WHERE id=?";
@@ -43,7 +42,6 @@ public class PostDao extends Post implements Dao {
         this.getById(id);
     }
 
-    @Override
     public void save() {
         //INSERT
         Connection cn = Connect.getConnect();
@@ -67,7 +65,6 @@ public class PostDao extends Post implements Dao {
         }
 }
 
-    @Override
     public void delete() {
         //UPDATE
         Connection cn = Connect.getConnect();
@@ -87,7 +84,6 @@ public class PostDao extends Post implements Dao {
         }
     }
 
-    @Override
     public void update() {
         if(this.getId()!=-1) {
             //UPDATE
