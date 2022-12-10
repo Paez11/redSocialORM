@@ -1,7 +1,8 @@
 package redSocial.controllers;
 
 import javafx.scene.input.KeyCode;
-import redSocial.DAO.FollowDao;
+
+import redSocial.model.DAO.FollowDao;
 import redSocial.utils.Valid;
 import redSocial.utils.Windows;
 import javafx.application.Platform;

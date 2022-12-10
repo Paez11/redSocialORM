@@ -13,6 +13,7 @@ public class User implements Serializable {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
     @Column(name = "nombre")
     protected String name;
@@ -23,15 +24,17 @@ public class User implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "post")
     protected List<Post> posts;
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "comments")
+
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "comment")
     protected List<Comment> comments;
+
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "likes")
     protected List<Post> likes;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "follow")
     protected List<User> followed;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "followers")
     protected List<User> follower;
 
     public User() {

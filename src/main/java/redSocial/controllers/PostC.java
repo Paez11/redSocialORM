@@ -8,8 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import redSocial.DAO.PostDao;
-import redSocial.DAO.UserDao;
+import redSocial.model.DAO.PostDao;
+import redSocial.model.DAO.UserDao;
 import redSocial.utils.Windows;
 
 import java.io.ByteArrayInputStream;

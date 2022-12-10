@@ -1,8 +1,8 @@
 package redSocial.controllers;
 
-import redSocial.DAO.CommentDao;
-import redSocial.DAO.PostDao;
-import redSocial.DAO.UserDao;
+import redSocial.model.DAO.CommentDao;
+import redSocial.model.DAO.PostDao;
+import redSocial.model.DAO.UserDao;
 import redSocial.utils.contador.Read;
 
 public class Data {
