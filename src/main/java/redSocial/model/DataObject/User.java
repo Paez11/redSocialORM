@@ -22,19 +22,21 @@ public class User implements Serializable {
     @Column(name = "avatar", columnDefinition = "LONGBLOB")
     protected byte[] avatar;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "user")
     protected List<Post> posts;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "comment")
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user")
     protected List<Comment> comments;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "likes")
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "user")
     protected List<Post> likes;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "follow")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "follower")
+    @JoinColumn(name = "id_user_follower", referencedColumnName = "id", nullable = false)
     protected List<User> followed;
 
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "followers")
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_follow", referencedColumnName = "id", nullable = false)
     protected List<User> follower;
 
     public User() {

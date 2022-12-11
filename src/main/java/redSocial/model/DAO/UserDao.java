@@ -53,10 +53,11 @@ public class UserDao extends User{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
             try {
-                manager.createQuery("INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)")
+                manager.createQuery(INSERT)
                         .setParameter(1, this.getName())
                         .setParameter(2, this.getPassword())
                         .setParameter(3, this.getAvatar());
+                manager.persist(this);
                 manager.getTransaction().commit();
                 manager.close();
             } catch (Exception e) {
@@ -68,8 +69,9 @@ public class UserDao extends User{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
             try {
-                manager.createQuery("DELETE FROM user WHERE id=?")
+                manager.createQuery(DELETE)
                         .setParameter(1, this.getId());
+                manager.persist(this);
                 manager.getTransaction().commit();
                 manager.close();
             } catch (Exception e) {
@@ -81,11 +83,12 @@ public class UserDao extends User{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
             try {
-                manager.createQuery("UPDATE user SET name=?, password=?, avatar=? WHERE id=?")
+                manager.createQuery(UPDATE)
                         .setParameter(1, this.getName())
                         .setParameter(2, this.getPassword())
                         .setParameter(3, this.getAvatar())
                         .setParameter(4, this.getId());
+                manager.persist(this);
                 manager.getTransaction().commit();
                 manager.close();
             } catch (Exception e) {
@@ -99,7 +102,7 @@ public class UserDao extends User{
             manager = emf.createEntityManager();
             manager.getTransaction().begin();
             try {
-                user = manager.createQuery("SELECT id,name,password,avatar FROM user WHERE id=?",UserDao.class)
+                user = manager.createQuery(SELECTBYID,UserDao.class)
                         .setParameter(1, id)
                         .getSingleResult();
                 manager.persist(user);
@@ -118,7 +121,7 @@ public class UserDao extends User{
             manager = emf.createEntityManager();
             manager.getTransaction().begin();
             try {
-                user = manager.createQuery("SELECT id,name,password,avatar FROM user WHERE name=?",UserDao.class)
+                user = manager.createQuery(SELECTBYNAME,UserDao.class)
                         .setParameter(1, name)
                         .getSingleResult();
                 manager.persist(user);
@@ -136,7 +139,7 @@ public class UserDao extends User{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            users = manager.createQuery("SELECT id,name,avatar FROM user").getResultList();
+            users = manager.createQuery(SELECTALL).getResultList();
             manager.persist(users);
             manager.getTransaction().commit();
             manager.close();
