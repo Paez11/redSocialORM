@@ -94,31 +94,115 @@ public class PostDao extends Post{
             }
     }
 
-   /* public static List<PostDao> getAll(){
-     
+    public static List<PostDao> getAll(){
+    	List<PostDao> posts = null;
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+        try {
+            posts = manager.createQuery(SELECTALL).getResultList();
+            manager.persist(posts);
+            manager.getTransaction().commit();
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al obtener los posts: " + e.getMessage());
+        }
+        return posts;
     }
-
+    
+    
     public Post getById(int id) {
-     
+    	PostDao post= new PostDao(id);
+        if (id!=-1){
+            manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            try {
+                post = manager.createQuery(SELECTCOMMENTS,PostDao.class)
+                        .setParameter(1, id)
+                        .getSingleResult();    
+                manager.persist(post);
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
+                Log.severe("Error al obtener el post: " + e.getMessage());
+            }
+        }
+        return post;
     }
+    
+    
+	public List<Comment> getComments() {
+		List<Comment> comments = null;
+		manager = emf.createEntityManager();
+		manager.getTransaction().begin();
+		try {
+			comments = manager.createQuery(SELECTCOMMENTS).getResultList();
+			manager.persist(comments);
+            manager.getTransaction().commit();
+            manager.close();
+		} catch (Exception e) {
+			Log.severe("Error al obtener los comments: " + e.getMessage());
+		}
 
-    public List<Comment> getComments(){
-       
-    }
-
+		return comments;
+	}
+    
+    
     public static List<PostDao> getAllByUser(int id){
-        
+    	List<PostDao> posts = null;
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+        try {
+            posts = manager.createQuery(SELECTBYUSER).getResultList();
+            manager.persist(posts);
+            manager.getTransaction().commit();
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al obtener los posts: " + e.getMessage());
+        }
+        return posts;
     }
-
+    
     public void saveLike(User u, Post p) {
-     
+    	manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+            try {
+                manager.createQuery(INSERTLIKE)
+                        .setParameter(1, u.getId())
+                        .setParameter(2, p.getId());
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
+                Log.severe("Error al insertar Like " + e.getMessage());
+            }
     }
-
+    
     public void deleteLike(User u) {
-       
+    	manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+            try {
+                manager.createQuery(DELETELIKE)
+                        .setParameter(1, u.getId());
+                manager.getTransaction().commit();
+                manager.close();
+            } catch (Exception e) {
+            	
+            }
     }
-
+    
     public Set<User> getAllLikes(Post p){
-    	
-    }*/
+    	Set<User> likes = null;
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+        try {
+        	likes = (Set<User>) manager.createQuery(SELECTALLLIKES).
+            		setParameter(1, p.getId())
+            		.getResultList();
+            manager.persist(likes);
+            manager.getTransaction().commit();
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al obtener los likes: " + e.getMessage());
+        }
+        return likes;	
+    }
 }
