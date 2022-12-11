@@ -1,13 +1,26 @@
 package redSocial.model.DataObject;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name = "comment")
 public class Comment {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "id_user_comment")
     protected User UserComment;
+    @Column(name = "texto")
     protected String textComment;
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "id_post_comment")
     protected Post post;
+    @Column(name = "fecha")
     protected Date date;
 
     public Comment(int id, User userComment, String textComment, Post post, Date date) {
