@@ -5,6 +5,9 @@ import redSocial.model.DataObject.User;
 import redSocial.utils.Connection.Connect;
 import redSocial.utils.Log;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +17,10 @@ import java.util.List;
 
 public class FollowDao extends Follow {
     private static Connection con = null;
+
+    private static EntityManager manager;
+    private static EntityManagerFactory emf= Persistence.createEntityManagerFactory("MySQL");
+
     private final static String INSERT = "INSERT INTO follower (id_follow,id_follower,id) VALUES (?,?,NULL)";
     private final static String DELETE = "DELETE FROM follower WHERE id=?";
     private final static String DELETEBYUSERS = "DELETE FROM follower WHERE id_follower=? AND id_follow=?";

@@ -14,11 +14,11 @@ public class Comment {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "id_user_comment")
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     protected User UserComment;
     @Column(name = "texto")
     protected String textComment;
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "id_post_comment")
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     protected Post post;
     @Column(name = "fecha")
     protected Date date;

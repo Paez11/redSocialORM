@@ -17,4 +17,8 @@ module es.iesfranciscodelosrios.redSocial {
     exports redSocial.controllers;
     exports redSocial;
     opens redSocial to javafx.fxml;
+
+    //test
+    exports redSocial.model.DataObject;
+    exports redSocial.model.DAO;
 }
