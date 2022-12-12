@@ -1,44 +1,50 @@
 package redSocial.model.DataObject;
 
+import redSocial.utils.Connection.Connect;
+import redSocial.utils.Log;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
+
+import static redSocial.utils.Connection.Connect.emf;
 
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static EntityManager manager;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
-    @Column(name = "nombre")
+    @Column(name = "name")
     protected String name;
     @Column(name = "password")
     protected String password;
     @Column(name = "avatar", columnDefinition = "LONGBLOB")
     protected byte[] avatar;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @Transient
     protected List<Post> posts;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @Transient
     protected List<Comment> comments;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @Transient
     protected List<Post> likes;
 
-    //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "follower")
-    //@JoinColumn(name = "id_user_follower", referencedColumnName = "id", nullable = false)
-    @Transient
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_followed"), inverseJoinColumns = @JoinColumn(name = "id"))
+    //@Transient
     protected List<User> followed;
 
-    //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    //@JoinColumn(name = "id_follow", referencedColumnName = "id", nullable = false)
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_follower"), inverseJoinColumns = @JoinColumn(name = "id"))
+    //@Transient
     protected List<User> follower;
 
     public User() {
@@ -180,6 +186,22 @@ public class User implements Serializable {
 
     public void setFollower(List<User> follower) {
         this.follower = follower;
+    }
+
+    public void save() {
+        manager = Connect.getConnect().createEntityManager();
+        manager.getTransaction().begin();
+        try {
+            manager.createQuery("INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)")
+                    .setParameter(1, this.getName())
+                    .setParameter(2, this.getPassword())
+                    .setParameter(3, this.getAvatar());
+            manager.persist(this);
+            manager.getTransaction().commit();
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al insertar usuario: " + e.getMessage());
+        }
     }
 
     @Override

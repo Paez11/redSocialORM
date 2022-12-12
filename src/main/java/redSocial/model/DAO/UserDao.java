@@ -53,7 +53,7 @@ public class UserDao extends User{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
             try {
-                manager.createQuery(INSERT)
+                manager.createQuery("INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)")
                         .setParameter(1, this.getName())
                         .setParameter(2, this.getPassword())
                         .setParameter(3, this.getAvatar());

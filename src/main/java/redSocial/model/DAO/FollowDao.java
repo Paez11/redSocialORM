@@ -35,7 +35,6 @@ public class FollowDao extends Follow {
     }
 
     public void save() {
-        con = Connect.getConnect();
         if (con != null){
             PreparedStatement st = null;
             try {
@@ -51,7 +50,6 @@ public class FollowDao extends Follow {
     }
 
     public void delete() {
-        con = Connect.getConnect();
         if (con != null){
             PreparedStatement st = null;
             try {
@@ -66,7 +64,6 @@ public class FollowDao extends Follow {
     }
 
     public void deletebyusers(User user, User followed) {
-        con = Connect.getConnect();
         if (con != null){
             PreparedStatement st = null;
             try {
@@ -82,7 +79,6 @@ public class FollowDao extends Follow {
     }
 
     public List<User> getByName(User user){
-        con = Connect.getConnect();
         List<User> followeds = new ArrayList<>();
         if (con != null){
             PreparedStatement st = null;
