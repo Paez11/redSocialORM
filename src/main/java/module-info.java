@@ -12,6 +12,7 @@ module es.iesfranciscodelosrios.redSocial {
     requires java.sql.rowset;
     requires java.persistence;
 
+
     opens redSocial.controllers to javafx.fxml;
     opens redSocial.utils.Connection to java.xml.bind;
     exports redSocial.controllers;
@@ -21,4 +22,6 @@ module es.iesfranciscodelosrios.redSocial {
     //test
     exports redSocial.model.DataObject;
     exports redSocial.model.DAO;
+    opens redSocial.model.DataObject;
+    opens redSocial.model.DAO;
 }

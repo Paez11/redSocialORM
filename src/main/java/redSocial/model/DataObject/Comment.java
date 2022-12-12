@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment {
 
     private static final long serialVersionUID = 1L;

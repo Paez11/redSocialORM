@@ -25,7 +25,7 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected int id;
-	@JoinColumn(name = "idUser", referencedColumnName = "idUser")
+	//@JoinColumn(name = "id_user", referencedColumnName = "user")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
 	protected User userName;
     @Column(name = "dateCreate")
@@ -34,9 +34,9 @@ public class Post implements Serializable {
     protected Date dateUpdate;
     @Column(name = "text")
     protected String text;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idComment", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<Comment> comments;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected Set<User> likes;
 
     public Post() {
