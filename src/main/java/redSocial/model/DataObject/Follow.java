@@ -1,8 +1,19 @@
 package redSocial.model.DataObject;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "follower")
 public class Follow {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    //@Column(name = "id_follower")
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private User user;
+    //@Column(name = "id_follow")
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private User followed;
 
     public Follow() {
