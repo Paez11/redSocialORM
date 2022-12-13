@@ -11,12 +11,11 @@ public class PersistenceTest {
 
     @Test
     public void CreateUserTest() {
+        UserDao ud = new UserDao();
         byte[] avatar = new byte[0];
         User user = new User("test", "test", avatar);
-        //user.save(user);
-        System.out.println(user.save(user));
-        User user2 = new User();
-        user2 = user2.getById(user.getId());
+        System.out.println(ud.save(user));
+        User user2 = ud.getById(user.getId());
         System.out.println(user);
         System.out.println(user2);
         assertEquals(user, user2);
