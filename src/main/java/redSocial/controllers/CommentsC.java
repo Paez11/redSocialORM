@@ -68,19 +68,19 @@ public class CommentsC  implements Initializable {
 
     @FXML
     private void publishComment(){
-        CommentDao cd = new CommentDao();
+        Comment cd = new Comment();
         if (!CommentText.getText().isEmpty()) {
             cd.setTextComment(CommentText.getText());
             cd.setUserComment(Data.principalUser);
             CommentText.clear();
             cd.setPost(Data.p);
-            cd.save();
+            CommentDao.save(cd);
             refreshComments();
         }
     }
 
-    private List<CommentDao> comments(){
-        List<CommentDao> ls = CommentDao.getAllByPost(Data.p);
+    private List<Comment> comments(){
+        List<Comment> ls = CommentDao.getAllByPost(Data.p);
 
         return ls;
     }
