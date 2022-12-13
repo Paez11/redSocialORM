@@ -34,8 +34,8 @@ public class CommentC {
 
     public void setData(Comment comment){
         Comment cd= CommentDao.getById(comment.getId());
-        UserDao ud= new UserDao(cd.getUserComment());
-        name.setText(ud.getName());
+        User u= Data.ud.getByName(cd.getTextComment());
+        name.setText(u.getName());
         comment2.setText(comment.getTextComment());
         String format = new SimpleDateFormat("dd/MM/yyyy").format(comment.getDate());
         date.setText(format);
@@ -46,7 +46,7 @@ public class CommentC {
 
     public void switchProfile(){
         Data.aux= this.c.getUserComment();
-        Data.caux = (CommentDao) this.c;
+        Data.caux = this.c;
 
         if (Data.principalUser.getId()==this.c.getId()) {
             App.loadScene(new Stage(), "Profile", "RedSocial", false, false);

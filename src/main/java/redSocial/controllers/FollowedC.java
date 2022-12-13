@@ -115,7 +115,7 @@ public class FollowedC implements Initializable {
                         // clicking on text part
                         row = (TableRow) node.getParent();
                     }
-                    Data.aux= (UserDao) row.getItem();
+                    Data.aux= (User) row.getItem();
                     App.loadScene(new Stage(), "Followed", "RedSocial", false, false);
                     App.closeScene((Stage) borderPane.getScene().getWindow());
                 }
@@ -188,8 +188,7 @@ public class FollowedC implements Initializable {
         if (Followbtn.getText().equals("Follow")){
             if (!Data.principalUser.getFollowed().contains(Data.aux)){
                 Data.principalUser.getFollowed().add(Data.aux);
-                FollowDao fd= new FollowDao(Data.principalUser, Data.aux);
-                fd.save();
+                Data.ud.follow(Data.principalUser, Data.aux);
                 Followbtn.setText("UnFollow");
                 refresh();
             }
@@ -201,8 +200,7 @@ public class FollowedC implements Initializable {
                 alert.setContentText("¿Estas seguro de que quieres dejar de seguir a este usuario?");
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    FollowDao fd= new FollowDao(Data.principalUser, Data.aux);
-                    fd.deletebyusers(Data.principalUser, Data.aux);
+                    Data.ud.unfollow(Data.principalUser, Data.aux);
                     Data.principalUser.getFollowed().remove(Data.aux);
                     Followbtn.setText("Follow");
                     refresh();

@@ -24,12 +24,6 @@ public class PersistenceTest {
 
     @Test
     public void CreatePostTest(){
-        PostDao post = new PostDao();
-        post.save();
-        PostDao post2 = new PostDao();
-        post2.getById(post.getId());
-        System.out.println(post);
-        System.out.println(post2);
-        assertEquals(post,post2);
+
     }
 }

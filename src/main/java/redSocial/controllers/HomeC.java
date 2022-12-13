@@ -111,7 +111,7 @@ public class HomeC implements Initializable {
                         // clicking on text part
                         row = (TableRow) node.getParent();
                     }
-                    Data.aux= (UserDao) row.getItem();
+                    Data.aux= (User) row.getItem();
                     App.loadScene(new Stage(), "Followed", "RedSocial", false, false);
                     App.closeScene((Stage) borderPane.getScene().getWindow());
                 }
