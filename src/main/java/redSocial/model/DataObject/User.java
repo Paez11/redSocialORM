@@ -1,9 +1,11 @@
 package redSocial.model.DataObject;
 
+import redSocial.model.DAO.UserDao;
 import redSocial.utils.Connection.Connect;
 import redSocial.utils.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -16,6 +18,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static EntityManager manager;
+    private static EntityManagerFactory emf= Persistence.createEntityManagerFactory("MySQL");
 
     @Id
     @Column(name = "id")
@@ -153,7 +156,26 @@ public class User implements Serializable {
     }
 
     public void setPosts(List<Post> posts) {
-        this.posts = posts;
+        if (posts == null) {
+            return;
+        }else {
+            for (Post post : posts) {
+                this.posts.add(post);
+            }
+        }
+    }
+
+    public boolean addPosts(Post p) {
+        boolean result = false;
+        if(this.posts == null) {
+            this.posts = new ArrayList<>();
+            this.posts.add(p);
+            result = true;
+        } else {
+            this.posts.add(p);
+            result = true;
+        }
+        return result;
     }
 
     public List<Comment> getComments() {
@@ -188,20 +210,39 @@ public class User implements Serializable {
         this.follower = follower;
     }
 
-    public void save() {
-        manager = Connect.getConnect().createEntityManager();
+
+    public boolean save(User user) {
+        boolean result = false;
+        manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            manager.createQuery("INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)")
-                    .setParameter(1, this.getName())
-                    .setParameter(2, this.getPassword())
-                    .setParameter(3, this.getAvatar());
-            manager.persist(this);
-            manager.getTransaction().commit();
-            manager.close();
+            if(!manager.contains(user)) {
+                manager.getTransaction().begin();
+                manager.persist(user);
+                result = true;
+                //manager.flush();
+                manager.getTransaction().commit();
+                manager.close();
+            }
         } catch (Exception e) {
             Log.severe("Error al insertar usuario: " + e.getMessage());
         }
+        return result;
+    }
+
+    public User getById(int id){
+        User user = new User(id,name,password,avatar);
+        if (id!=-1){
+            manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            try {
+                user = manager.find(UserDao.class, id);
+                manager.close();
+            } catch (Exception e) {
+                Log.severe("Error al obtener usuario: " + e.getMessage());
+            }
+        }
+        return user;
     }
 
     @Override
