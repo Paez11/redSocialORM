@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import redSocial.model.DAO.CommentDao;
 import redSocial.model.DAO.UserDao;
 import redSocial.model.DataObject.Comment;
+import redSocial.model.DataObject.User;
 
 import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;
@@ -39,12 +40,12 @@ public class CommentC {
         String format = new SimpleDateFormat("dd/MM/yyyy").format(comment.getDate());
         date.setText(format);
         this.c=cd;
-        Data.aux= (UserDao) this.c.getUserComment();
+        Data.aux= this.c.getUserComment();
         profileImage.setImage(new Image(new ByteArrayInputStream(Data.aux.getAvatar())));
     }
 
     public void switchProfile(){
-        Data.aux= (UserDao) this.c.getUserComment();
+        Data.aux= this.c.getUserComment();
         Data.caux = (CommentDao) this.c;
 
         if (Data.principalUser.getId()==this.c.getId()) {

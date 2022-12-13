@@ -118,7 +118,7 @@ public class ProfileC implements Initializable {
                         // clicking on text part
                         row = (TableRow) node.getParent();
                     }
-                    Data.aux= (UserDao) row.getItem();
+                    Data.aux= (User) row.getItem();
                     App.loadScene(new Stage(), "Followed", "RedSocial", false, false);
                     App.closeScene((Stage) borderPane.getScene().getWindow());
                 }
@@ -174,7 +174,7 @@ public class ProfileC implements Initializable {
         String newNickName = nickname.getText();
         nickname.setText(newNickName);
         Data.principalUser.setName(newNickName);
-        Data.principalUser.update();
+        Data.ud.update(Data.principalUser);
         Windows.mostrarInfo("editNickName","NickName","NickName editado correctamente");
     }
 
@@ -183,7 +183,7 @@ public class ProfileC implements Initializable {
         password.setText(newPassword);
         newPassword = Valid.sha256(newPassword);
         Data.principalUser.setPassword(newPassword);
-        Data.principalUser.update();
+        Data.ud.update(Data.principalUser);
         Windows.mostrarInfo("editPassword","Password","Password editada correctamente");
     }
 
@@ -194,7 +194,7 @@ public class ProfileC implements Initializable {
 
         if (path!=null){
             Data.principalUser.setAvatar(path.getBytes());
-            Data.principalUser.update();
+            Data.ud.update(Data.principalUser);
             Windows.mostrarInfo("editPhoto","Foto","Fhoto editada correctamente");
         }else {
             Windows.mostrarInfo("editPhoto","Foto","Foto no seleccionada");

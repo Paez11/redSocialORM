@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.User;
 import redSocial.utils.Windows;
 
 import java.io.ByteArrayInputStream;
@@ -61,13 +62,13 @@ public class PostC implements Initializable {
     }
 
     public void setDataPost(PostDao p){
-        UserDao aux2 = new UserDao();
-        aux2 = (UserDao) aux2.getById(p.getUserName().getId());
+        User aux2 = new User();
+        aux2 = Data.ud.getById(p.getUserName().getId());
         username.setText(aux2.getName());
         profileImage.setImage(new Image(new ByteArrayInputStream(aux2.getAvatar())));
         content.setText(p.getText());
         Data.p=p;
-        Data.p.setLikes(Data.p.getAllLikes(Data.p));
+        Data.p.setLikes(Data.pd.getAllLikes(Data.p));
         if (Data.p.getLikes()!=null){
             if (Data.p.getLikes().contains(Data.principalUser)){
                 likes.setText("no me gusta");
@@ -122,7 +123,7 @@ public class PostC implements Initializable {
     }
 
     public void switchProfile(){
-        Data.aux= (UserDao) this.p.getUserName();
+        Data.aux= this.p.getUserName();
         Data.p = this.p;
         if (Data.principalUser.getId()==Data.aux.getId()) {
             App.loadScene(new Stage(), "Profile", "RedSocial", false, false);
@@ -136,14 +137,14 @@ public class PostC implements Initializable {
     public void likePost(){
         Data.paux= this.p;
         if (likes.getText().equals("me gusta")){
-            if (!Data.paux.getAllLikes(Data.paux).contains(Data.principalUser)){
+            if (!Data.pd.getAllLikes(Data.paux).contains(Data.principalUser)){
                 Data.paux.getLikes().add(Data.principalUser);
-                Data.paux.saveLike(Data.principalUser,Data.paux);
+                Data.pd.saveLike(Data.principalUser,Data.paux);
                 likes.setText("no me gusta");
             }
         }else if (likes.getText().equals("no me gusta")){
-            if (Data.paux.getAllLikes(Data.paux).contains(Data.principalUser)){
-                    Data.paux.deleteLike(Data.principalUser);
+            if (Data.pd.getAllLikes(Data.paux).contains(Data.principalUser)){
+                    Data.pd.deleteLike(Data.principalUser);
                     Data.paux.getLikes().remove(Data.principalUser);
                     likes.setText("me gusta");
             }

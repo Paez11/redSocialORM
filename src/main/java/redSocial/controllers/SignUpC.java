@@ -2,7 +2,7 @@ package redSocial.controllers;
 
 import javafx.scene.input.KeyCode;
 import redSocial.Start;
-import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.User;
 import redSocial.utils.Log;
 import redSocial.utils.Valid;
 import redSocial.utils.Windows;
@@ -56,14 +56,14 @@ public class SignUpC implements Initializable {
             if (password.equals(password2)){
                 password = Valid.sha256(password);
                 byte[] avatar = new byte[0];
-                UserDao user = new UserDao(username,password,avatar);
+                User user = new User(username,password,avatar);
                 try {
                     user.setAvatar((Start.class.getResourceAsStream("user.png").readAllBytes()));
                 } catch (IOException e) {
                     Log.severe("Error al cargar el avatar por defecto: "+e.getMessage());
                 }
                 Data.principalUser = user;
-                //Data.principalUser.save();
+                Data.ud.save(user);
                 App.loadScene(new Stage(), "LogIn", "RedSocial", false, false);
                 App.closeScene((Stage) anchorPane.getScene().getWindow());
             }else{
