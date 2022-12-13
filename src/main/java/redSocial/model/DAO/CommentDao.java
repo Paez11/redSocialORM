@@ -38,15 +38,15 @@ public class CommentDao extends Comment{
         super();
     }
 
-    public void save() {
+    public static void save(Comment c) {
         //INSERT
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try{
             manager.createQuery(INSERT)
-                    .setParameter(1, this.getUserComment().getId())
-                    .setParameter(2, this.getTextComment())
-                    .setParameter(3, this.getPost().getId())
+                    .setParameter(1, c.getUserComment().getId())
+                    .setParameter(2, c.getTextComment())
+                    .setParameter(3, c.getPost().getId())
                     .setParameter(4, java.sql.Date.valueOf(LocalDate.now()));
             manager.getTransaction().commit();
             manager.close();
@@ -77,13 +77,13 @@ public class CommentDao extends Comment{
          */
     }
 
-    public void delete() {
+    public static void delete(int id) {
 
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try{
             manager.createQuery(DELETE)
-                    .setParameter(1,this.id);
+                    .setParameter(1,id);
             manager.getTransaction().commit();
             manager.close();
         }catch (Exception e){
@@ -107,13 +107,13 @@ public class CommentDao extends Comment{
          */
 }
 
-    public void update() {
+    public static void update(Comment comment) {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try{
             manager.createQuery(UPDATE)
-                    .setParameter(3,this.id)
-                    .setParameter(1,this.textComment)
+                    .setParameter(3,comment.getId())
+                    .setParameter(1,comment.getTextComment())
                     .setParameter(2, java.sql.Date.valueOf(LocalDate.now()));
             manager.getTransaction().commit();
             manager.close();
@@ -139,9 +139,9 @@ public class CommentDao extends Comment{
 
     }
 
-    public Comment getById(int id) {
+    public static Comment getById(int id) {
 
-        CommentDao comment = new CommentDao(id, UserComment, textComment, post, date);
+        Comment comment = new Comment(id);
 
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
@@ -183,7 +183,7 @@ public class CommentDao extends Comment{
         return comment;
     }
 
-    public List<Comment> getAllByUser(User userByS, Post postByS){
+    public static List<Comment> getAllByUser(User userByS, Post postByS){
 
         List<Comment> result = new ArrayList<Comment>();
 
@@ -230,10 +230,10 @@ public class CommentDao extends Comment{
         return result;
     }
 
-    public static List<CommentDao> getAllByPost(Post postByS){
+    public static List<Comment> getAllByPost(Post postByS){
 
 
-        List<CommentDao> result = new ArrayList<CommentDao>();
+        List<Comment> result = new ArrayList<Comment>();
 
         manager = emf.createEntityManager();
         manager.getTransaction().begin();

@@ -32,8 +32,12 @@ public class Comment {
         this.post = post;
         this.date = date;
     }
+    public Comment (int id){
+        this.id = id;
+    }
 
     public Comment() {
+        this.id=0;
     }
 
     public int getId() {

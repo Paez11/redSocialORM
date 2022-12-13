@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 
 public class CommentC {
 
-    private CommentDao c;
+    private Comment c;
 
     @FXML
     private ImageView profileImage;
@@ -32,7 +32,7 @@ public class CommentC {
     private Label date;
 
     public void setData(Comment comment){
-        CommentDao cd= (CommentDao) new CommentDao().getById(comment.getId());
+        Comment cd= CommentDao.getById(comment.getId());
         UserDao ud= new UserDao(cd.getUserComment());
         name.setText(ud.getName());
         comment2.setText(comment.getTextComment());
@@ -45,8 +45,9 @@ public class CommentC {
 
     public void switchProfile(){
         Data.aux= (UserDao) this.c.getUserComment();
-        Data.caux = this.c;
-        if (Data.principalUser.getId()==Data.aux.getId()) {
+        Data.caux = (CommentDao) this.c;
+
+        if (Data.principalUser.getId()==this.c.getId()) {
             App.loadScene(new Stage(), "Profile", "RedSocial", false, false);
             App.closeScene((Stage) anchorPane.getScene().getWindow());
         }else{
