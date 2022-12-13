@@ -15,10 +15,18 @@ import java.sql.*;
 import java.util.List;
 
 public class UserDao{
-    private static Connection con = null;
+
+    private static UserDao instance;
 
     private static EntityManager manager;
     private static EntityManagerFactory emf= Persistence.createEntityManagerFactory("MySQL");
+
+    public static UserDao getInstance() {
+        if(instance==null) {
+            instance=new UserDao();
+        }
+        return instance;
+    }
 
     public static boolean save(User user) {
         boolean result = false;
@@ -40,9 +48,9 @@ public class UserDao{
     }
     public static boolean delete(User user) {
         boolean result = false;
-        manager = Connect.getConnect().createEntityManager();
+        manager = emf.createEntityManager();
             try {
-                if(!manager.contains(user)) {
+                if(manager.contains(user)) {
                     manager.getTransaction().begin();
                     manager.remove(user);
                     result = true;
@@ -59,9 +67,8 @@ public class UserDao{
     public static boolean update(User user) {
         boolean result = false;
         manager = emf.createEntityManager();
-        manager.getTransaction().begin();
         try {
-            if(!manager.contains(user)) {
+            if(manager.contains(user)) {
                 manager.getTransaction().begin();
                 user.setName(user.getName());
                 user.setPassword(user.getPassword());
@@ -155,7 +162,7 @@ public class UserDao{
 
     private static List<User> getAllUsers(){
         List<User> users = null;
-        manager = Connect.getConnect().createEntityManager();
+        manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
             users = manager.createNativeQuery("SELECT id,name,avatar FROM user").getResultList();

@@ -13,9 +13,9 @@ public class Data {
     protected static Thread t = new Thread(c);
     protected static User aux = new User();
     protected static User principalUser = new User();
-    protected static UserDao ud = new UserDao();
+    protected static UserDao ud = UserDao.getInstance();
     protected static Post p = new Post();
     protected static Post paux = new Post();
-    protected static PostDao pd = new PostDao();
+    protected static PostDao pd = PostDao.getInstance();
     protected static Comment caux = new Comment();
 }

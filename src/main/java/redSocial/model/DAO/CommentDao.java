@@ -47,7 +47,7 @@ public class CommentDao {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            if(!manager.contains(c)) {
+            if(manager.contains(c)) {
                 manager.getTransaction().begin();
                 manager.remove(c);
                 manager.flush();
@@ -63,7 +63,7 @@ public class CommentDao {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try{
-            if(!manager.contains(comment)) {
+            if(manager.contains(comment)) {
                 manager.getTransaction().begin();
                 comment.setTextComment(comment.getTextComment());
                 manager.merge(comment);
