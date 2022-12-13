@@ -53,6 +53,12 @@ public class User implements Serializable {
     public User() {
     }
 
+    public User(int id){
+        this.id=id;
+    }
+    public User(String name) {
+        this.name = name;
+    }
     public User(int id, String name) {
         this.id = id;
         this.name = name;
@@ -208,41 +214,6 @@ public class User implements Serializable {
 
     public void setFollower(List<User> follower) {
         this.follower = follower;
-    }
-
-
-    public boolean save(User user) {
-        boolean result = false;
-        manager = emf.createEntityManager();
-        try {
-            user.setId(0);
-            if(!manager.contains(user)) {
-                manager.getTransaction().begin();
-                manager.persist(user);
-                result = true;
-                manager.flush();
-                manager.getTransaction().commit();
-                manager.close();
-            }
-        } catch (Exception e) {
-            Log.severe("Error al insertar usuario: " + e.getMessage());
-        }
-        return result;
-    }
-
-    public User getById(int id){
-        User user = new User(id,name,password,avatar);
-        if (id!=-1){
-            manager = emf.createEntityManager();
-            manager.getTransaction().begin();
-            try {
-                user = manager.find(UserDao.class, id);
-                manager.close();
-            } catch (Exception e) {
-                Log.severe("Error al obtener usuario: " + e.getMessage());
-            }
-        }
-        return user;
     }
 
     @Override

@@ -14,80 +14,76 @@ import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.List;
 
-public class UserDao extends User{
+public class UserDao{
     private static Connection con = null;
 
     private static EntityManager manager;
     private static EntityManagerFactory emf= Persistence.createEntityManagerFactory("MySQL");
 
-    private final static String INSERT = "INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)";
-    private final static String DELETE = "DELETE FROM user WHERE id=?";
-    private final static String UPDATE = "UPDATE user SET name=?, password=?, avatar=? WHERE id=?";
-    private final static String SELECTBYID = "SELECT id,name,password,avatar FROM user WHERE id=?";
-    private final static String SELECTBYNAME = "SELECT id,name,password,avatar FROM user WHERE name=?";
-    private final static String SELECTALL = "SELECT id,name,avatar FROM user";
-
-    public UserDao(int id, String name){
-        super(id,name);
-    }
-    public UserDao(int id, String name,byte[] avatar){
-        super(id,name,avatar);
-    }
-    public UserDao(int id, String name,String password,byte[] avatar){
-        super(id,name,password,avatar);
-    }
-    public UserDao(String name,String password,byte[] avatar){
-        super(name,password,avatar);
-    }
-    public UserDao(){
-        super();
-    }
-    public UserDao(User user){
-        super(user.getId(),user.getName());
-    }
-    public UserDao(int id){
-        this.getById(id);
-    }
-
-
-    public void delete() {
-        manager = Connect.getConnect().createEntityManager();
-        manager.getTransaction().begin();
-            try {
-                manager.createQuery(DELETE)
-                        .setParameter(1, this.getId());
-                manager.persist(this);
+    public static boolean save(User user) {
+        boolean result = false;
+        manager = emf.createEntityManager();
+        try {
+            user.setId(0);
+            if(!manager.contains(user)) {
+                manager.getTransaction().begin();
+                manager.persist(user);
+                result = true;
+                manager.flush();
                 manager.getTransaction().commit();
                 manager.close();
+            }
+        } catch (Exception e) {
+            Log.severe("Error al insertar usuario: " + e.getMessage());
+        }
+        return result;
+    }
+    public static boolean delete(User user) {
+        boolean result = false;
+        manager = Connect.getConnect().createEntityManager();
+            try {
+                if(!manager.contains(user)) {
+                    manager.getTransaction().begin();
+                    manager.remove(user);
+                    result = true;
+                    manager.flush();
+                    manager.getTransaction().commit();
+                    manager.close();
+                }
             } catch (Exception e) {
                 Log.severe("Error al eliminar usuario: " + e.getMessage());
             }
+        return result;
     }
 
-    public void update() {
+    public static boolean update(User user) {
+        boolean result = false;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
-            try {
-                manager.createQuery(UPDATE)
-                        .setParameter(1, this.getName())
-                        .setParameter(2, this.getPassword())
-                        .setParameter(3, this.getAvatar())
-                        .setParameter(4, this.getId());
-                manager.persist(this);
+        try {
+            if(!manager.contains(user)) {
+                manager.getTransaction().begin();
+                user.setName(user.getName());
+                user.setPassword(user.getPassword());
+                user.setAvatar(user.getAvatar());
+                result = true;
+                manager.flush();
                 manager.getTransaction().commit();
                 manager.close();
-            } catch (Exception e) {
-                Log.severe("Error al actualizar usuario: " + e.getMessage());
             }
+        } catch (Exception e) {
+            Log.severe("Error al actualizar usuario: " + e.getMessage());
+        }
+        return result;
     }
 
-    public User getById(int id){
-        UserDao user = new UserDao(id,name,password,avatar);
+    public static User getById(int id){
+        User user = new User(id);
         if (id!=-1){
             manager = emf.createEntityManager();
             manager.getTransaction().begin();
             try {
-                user = manager.find(UserDao.class, id);
+                user = manager.find(User.class, id);
                 manager.close();
             } catch (Exception e) {
                 Log.severe("Error al obtener usuario: " + e.getMessage());
@@ -96,17 +92,13 @@ public class UserDao extends User{
         return user;
     }
 
-    public User getByName(String name){
-        UserDao user = new UserDao(id,name,password,avatar);
+    public static User getByName(String name){
+        User user = new User(name);
         if (name!=null){
-            manager = Connect.getConnect().createEntityManager();
+            manager = emf.createEntityManager();
             manager.getTransaction().begin();
             try {
-                user = manager.createQuery(SELECTBYNAME,UserDao.class)
-                        .setParameter(1, name)
-                        .getSingleResult();
-                manager.persist(user);
-                manager.getTransaction().commit();
+                user = manager.find(User.class, name);
                 manager.close();
             } catch (Exception e) {
                 Log.severe("Error al obtener usuario: " + e.getMessage());
@@ -115,12 +107,57 @@ public class UserDao extends User{
         return user;
     }
 
-    private List<User> getAllUsers(){
+    public static boolean follow(User user, User followed){
+        boolean result = false;
+        manager = emf.createEntityManager();
+
+        try {
+            manager.getTransaction().begin();
+
+            result = true;
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al seguir usuario: " + e.getMessage());
+        }
+        return result;
+    }
+
+    public static boolean unfollow(User user, User followed){
+        boolean result = false;
+        manager = emf.createEntityManager();
+
+        try {
+            manager.getTransaction().begin();
+
+            result = true;
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al dejar de seguir usuario: " + e.getMessage());
+        }
+        return result;
+    }
+
+    public static User getFollowedByName(String name){
+        User user = new User(name);
+        if (name!=null){
+            manager = emf.createEntityManager();
+            manager.getTransaction().begin();
+            try {
+                user = manager.find(User.class, name);
+                manager.close();
+            } catch (Exception e) {
+                Log.severe("Error al obtener seguido: " + e.getMessage());
+            }
+        }
+        return user;
+    }
+
+    private static List<User> getAllUsers(){
         List<User> users = null;
         manager = Connect.getConnect().createEntityManager();
         manager.getTransaction().begin();
         try {
-            users = manager.createQuery(SELECTALL).getResultList();
+            users = manager.createNativeQuery("SELECT id,name,avatar FROM user").getResultList();
             manager.persist(users);
             manager.getTransaction().commit();
             manager.close();

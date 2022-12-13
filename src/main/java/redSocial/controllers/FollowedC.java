@@ -20,7 +20,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import redSocial.model.DAO.FollowDao;
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
 import redSocial.model.DataObject.User;
