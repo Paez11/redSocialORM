@@ -33,7 +33,7 @@ public class CreatePostC implements Initializable {
     public void submit(ActionEvent actionEvent) {
         Data.p.setUserName(Data.principalUser);
         Data.p.setText(content.getText());
-        Data.p.save();
+        Data.pd.save(Data.p);
         App.loadScene(new Stage(), "Home", "RedSocial", false, false);
         App.closeScene((Stage) anchorPane.getScene().getWindow());
     }

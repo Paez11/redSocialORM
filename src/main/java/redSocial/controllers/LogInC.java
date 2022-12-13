@@ -50,11 +50,10 @@ public class LogInC implements Initializable {
             Windows.mostrarAlerta("Error","Error","Rellene todos los campos");
         }else{
             password = Valid.sha256(password);
-            Data.principalUser.getByName(nickname);
+            Data.principalUser = Data.ud.getByName(nickname);
             Data.principalUser.setName(nickname);           //No se por que?, pero getByName no setea el nombre del usuario
             if (Data.principalUser.getName()!=null && Data.principalUser.getPassword().equals(password)){
-                FollowDao fd = new FollowDao();
-                Data.principalUser.setFollowed(fd.getByName(Data.principalUser));
+                //Data.principalUser.setFollowed(Data.ud.getFollowedByName());
                 App.loadScene(new Stage(), "Home", "RedSocial", false, false);
                 App.closeScene((Stage) anchorPane.getScene().getWindow());
             }else{

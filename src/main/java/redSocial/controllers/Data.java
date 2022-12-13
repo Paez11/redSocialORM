@@ -3,14 +3,19 @@ package redSocial.controllers;
 import redSocial.model.DAO.CommentDao;
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.Comment;
+import redSocial.model.DataObject.Post;
+import redSocial.model.DataObject.User;
 import redSocial.utils.contador.Read;
 
 public class Data {
     protected static Read c = new Read();
     protected static Thread t = new Thread(c);
-    protected static UserDao aux = new UserDao();
-    protected static UserDao principalUser = new UserDao();
-    protected static PostDao p = new PostDao();
-    protected static PostDao paux = new PostDao();
-    protected static CommentDao caux = new CommentDao();
+    protected static User aux = new User();
+    protected static User principalUser = new User();
+    protected static UserDao ud = new UserDao();
+    protected static Post p = new Post();
+    protected static Post paux = new Post();
+    protected static PostDao pd = new PostDao();
+    protected static Comment caux = new Comment();
 }
