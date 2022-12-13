@@ -22,13 +22,6 @@ public class PostDao extends Post{
 	private static EntityManager manager;
 	private static EntityManagerFactory emf=Persistence.createEntityManagerFactory("MySQL");
 
-
-	private final static String INSERTLIKE = "INSERT INTO likes (id_user, id_post, id) VALUES (?,?,NULL)";
-    private final static String DELETELIKE = "DELETE FROM likes WHERE id_user=?";
-    private final static String SELECTALLLIKES = "SELECT id_user,id_post,id FROM likes WHERE id_post=?";
-
-  
-    
     public static boolean save(Post post) {
         boolean result = false;
         manager = emf.createEntityManager();
@@ -50,7 +43,7 @@ public class PostDao extends Post{
 
     public static boolean delete(Post post) {
         boolean result = false;
-        manager = Connect.getConnect().createEntityManager();
+        manager = emf.createEntityManager();
             try {
                 if(!manager.contains(post)) {
                     manager.getTransaction().begin();
@@ -91,7 +84,7 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            posts = manager.createQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post ORDER BY fecha_creacion DESC").getResultList();
+            posts = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post ORDER BY fecha_creacion DESC").getResultList();
             manager.persist(posts);
             manager.getTransaction().commit();
             manager.close();
@@ -121,7 +114,7 @@ public class PostDao extends Post{
        manager = emf.createEntityManager();
        manager.getTransaction().begin();
        try {
-           posts = manager.createQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+ u.getId()).getResultList();
+           posts = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+ u.getId()).getResultList();
            manager.persist(posts);
            manager.getTransaction().commit();
            manager.close();
@@ -136,7 +129,7 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            posts = manager.createQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+id +" ORDER BY fecha_modificacion DESC").getResultList();
+            posts = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+id +" ORDER BY fecha_modificacion DESC").getResultList();
             manager.persist(posts);
             manager.getTransaction().commit();
             manager.close();
@@ -150,7 +143,7 @@ public class PostDao extends Post{
     	manager = emf.createEntityManager();
         manager.getTransaction().begin();
             try {
-                manager.createQuery(INSERTLIKE)
+                manager.createNativeQuery("INSERT INTO likes (id_user, id_post, id) VALUES (?,?,NULL)")
                         .setParameter(1, u.getId())
                         .setParameter(2, p.getId());
                 manager.getTransaction().commit();
@@ -164,7 +157,7 @@ public class PostDao extends Post{
     	manager = emf.createEntityManager();
         manager.getTransaction().begin();
             try {
-                manager.createQuery(DELETELIKE)
+                manager.createNativeQuery("DELETE FROM likes WHERE id_user=?")
                         .setParameter(1, u.getId());
                 manager.getTransaction().commit();
                 manager.close();
@@ -178,7 +171,7 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-        	likes = (Set<User>) manager.createQuery(SELECTALLLIKES).
+        	likes = (Set<User>) manager.createNativeQuery("SELECT id_user,id_post,id FROM likes WHERE id_post=?").
             		setParameter(1, p.getId())
             		.getResultList();
             manager.persist(likes);

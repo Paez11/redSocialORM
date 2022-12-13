@@ -24,7 +24,7 @@ public class UserDao{
         boolean result = false;
         manager = emf.createEntityManager();
         try {
-            user.setId(0);
+            //user.setId(0);
             if(!manager.contains(user)) {
                 manager.getTransaction().begin();
                 manager.persist(user);
@@ -66,6 +66,7 @@ public class UserDao{
                 user.setName(user.getName());
                 user.setPassword(user.getPassword());
                 user.setAvatar(user.getAvatar());
+                manager.merge(user);
                 result = true;
                 manager.flush();
                 manager.getTransaction().commit();
