@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Windows;
 
@@ -20,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class PostC implements Initializable {
 
-    private PostDao p;
+    private Post p;
 
     @FXML
     private AnchorPane anchorPane;
@@ -61,7 +62,7 @@ public class PostC implements Initializable {
         editLabel.setVisible(false);
     }
 
-    public void setDataPost(PostDao p){
+    public void setDataPost(Post p){
         User aux2 = new User();
         aux2 = Data.ud.getById(p.getUserName().getId());
         username.setText(aux2.getName());
@@ -98,7 +99,8 @@ public class PostC implements Initializable {
 
     public void deletePost(){
         if (Data.principalUser.getId()==p.getUserName().getId()){
-            p.delete();
+        	PostDao pd= new PostDao();
+            pd.delete(p);
             Windows.mostrarAlerta("Eliminar","Eliminar","post eliminado");
             App.loadScene(new Stage(), "Home", "RedSocial", false, false);
             App.closeScene((Stage) anchorPane.getScene().getWindow());
