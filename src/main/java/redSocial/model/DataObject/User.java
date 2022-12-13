@@ -33,10 +33,12 @@ public class User implements Serializable {
 
     //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "follower")
     //@JoinColumn(name = "id_user_follower", referencedColumnName = "id", nullable = false)
+    @Transient
     protected List<User> followed;
 
     //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     //@JoinColumn(name = "id_follow", referencedColumnName = "id", nullable = false)
+    @Transient
     protected List<User> follower;
 
     public User() {
