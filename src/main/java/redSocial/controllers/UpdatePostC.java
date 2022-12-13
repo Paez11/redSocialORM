@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import redSocial.model.DAO.PostDao;
 import redSocial.utils.Windows;
 
 import java.net.URL;
@@ -38,7 +39,7 @@ public class UpdatePostC implements Initializable {
             Windows.mostrarAlerta("Error", "Error", "El post no puede estar vacio");
         }else {
             Data.paux.setText(content.getText());
-            Data.paux.update();
+            Data.pd.update(Data.paux);
             App.loadScene(new Stage(), "Home", "RedSocial", false, false);
             App.closeScene((Stage) anchorPane.getScene().getWindow());
         }

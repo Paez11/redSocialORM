@@ -21,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Log;
 import redSocial.utils.Tools;
@@ -35,7 +36,7 @@ import java.util.ResourceBundle;
 
 public class ProfileC implements Initializable {
 
-    private List<PostDao> posts;
+    private List<Post> posts;
     List<User> followed = Data.principalUser.getFollowed();
     List<String> pstFile;
 
@@ -164,8 +165,8 @@ public class ProfileC implements Initializable {
         }
     }
 
-    private List<PostDao> Userposts() {
-        List<PostDao> ls = PostDao.getAllByUser(Data.principalUser.getId());
+    private List<Post> Userposts() {
+        List<Post> ls = PostDao.getAllByUser(Data.principalUser.getId());
 
         return ls;
     }

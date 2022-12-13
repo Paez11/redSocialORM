@@ -86,8 +86,8 @@ public class PostDao extends Post{
         return result;
     }
 
-   public static List<Post> getAll(){
-    	List<Post> posts = null;
+   public static List<PostDao> getAll(){
+    	List<PostDao> posts = null;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
