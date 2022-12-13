@@ -18,15 +18,23 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class PostDao extends Post{
-	private static Connection con = null;
+
+    private static PostDao instance;
+
 	private static EntityManager manager;
 	private static EntityManagerFactory emf=Persistence.createEntityManagerFactory("MySQL");
+
+    public static PostDao getInstance() {
+        if(instance==null) {
+            instance=new PostDao();
+        }
+        return instance;
+    }
 
     public static boolean save(Post post) {
         boolean result = false;
         manager = emf.createEntityManager();
         try {
-            post.setId(0);
             if(!manager.contains(post)) {
                 manager.getTransaction().begin();
                 manager.persist(post);
@@ -45,7 +53,7 @@ public class PostDao extends Post{
         boolean result = false;
         manager = emf.createEntityManager();
             try {
-                if(!manager.contains(post)) {
+                if(manager.contains(post)) {
                     manager.getTransaction().begin();
                     manager.remove(post);
                     result = true;
@@ -64,7 +72,7 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            if(!manager.contains(post)) {
+            if(manager.contains(post)) {
                 manager.getTransaction().begin(); 
                 post.setText(post.getText());
                 post.setDateUpdate(Date.valueOf(LocalDate.now()));
