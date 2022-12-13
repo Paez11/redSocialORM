@@ -12,8 +12,8 @@ public class PersistenceTest {
     @Test
     public void CreateUserTest() {
         byte[] avatar = new byte[0];
-        User user = new User(1,"test", "test", avatar);
-        user.save(user);
+        User user = new User("test", "test", avatar);
+        //user.save(user);
         System.out.println(user.save(user));
         User user2 = new User();
         user2 = user2.getById(user.getId());

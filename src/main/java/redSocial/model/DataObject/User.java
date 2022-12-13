@@ -40,14 +40,14 @@ public class User implements Serializable {
     @Transient
     protected List<Post> likes;
 
-    //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "follower")
-    //@JoinColumn(name = "id_user_follower", referencedColumnName = "id", nullable = false)
-    @Transient
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_followed"), inverseJoinColumns = @JoinColumn(name = "id"))
+    //@Transient
     protected List<User> followed;
 
-    //@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    //@JoinColumn(name = "id_follow", referencedColumnName = "id", nullable = false)
-    @Transient
+    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_follower"), inverseJoinColumns = @JoinColumn(name = "id"))
+    //@Transient
     protected List<User> follower;
 
     public User() {
@@ -214,13 +214,13 @@ public class User implements Serializable {
     public boolean save(User user) {
         boolean result = false;
         manager = emf.createEntityManager();
-        manager.getTransaction().begin();
         try {
+            user.setId(0);
             if(!manager.contains(user)) {
                 manager.getTransaction().begin();
                 manager.persist(user);
                 result = true;
-                //manager.flush();
+                manager.flush();
                 manager.getTransaction().commit();
                 manager.close();
             }
