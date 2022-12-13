@@ -7,16 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class Post implements Serializable {
@@ -25,18 +16,23 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected int id;
-	@JoinColumn(name = "idUser", referencedColumnName = "idUser")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", referencedColumnName = "id")
 	protected User userName;
-    @Column(name = "dateCreate")
+    @Column(name = "fecha_creacion")
     protected Date dateCreate;
-    @Column(name = "dateUpdate")
+    @Column(name = "fecha_modficacion")
     protected Date dateUpdate;
-    @Column(name = "text")
+    @Column(name = "texto")
     protected String text;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idComment", fetch = FetchType.LAZY)
+
+    @Transient
     protected List<Comment> comments;
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser", fetch = FetchType.LAZY)
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "id_post"), inverseJoinColumns = @JoinColumn(name = "id_user"))
+    //@EmbeddedId
+    //@Transient
     protected Set<User> likes;
 
     public Post() {

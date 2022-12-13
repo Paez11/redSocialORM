@@ -18,7 +18,7 @@ public class UserDao extends User{
     private static Connection con = null;
 
     private static EntityManager manager;
-    private static EntityManagerFactory emf=Persistence.createEntityManagerFactory("MySQL");
+    private static EntityManagerFactory emf= Persistence.createEntityManagerFactory("MySQL");
 
     private final static String INSERT = "INSERT INTO user(id,name,password,avatar) VALUES (NULL,?,?,?)";
     private final static String DELETE = "DELETE FROM user WHERE id=?";
@@ -49,24 +49,9 @@ public class UserDao extends User{
         this.getById(id);
     }
 
-    public void save() {
-        manager = emf.createEntityManager();
-        manager.getTransaction().begin();
-            try {
-                manager.createQuery(INSERT)
-                        .setParameter(1, this.getName())
-                        .setParameter(2, this.getPassword())
-                        .setParameter(3, this.getAvatar());
-                manager.persist(this);
-                manager.getTransaction().commit();
-                manager.close();
-            } catch (Exception e) {
-                Log.severe("Error al insertar usuario: " + e.getMessage());
-            }
-    }
 
     public void delete() {
-        manager = emf.createEntityManager();
+        manager = Connect.getConnect().createEntityManager();
         manager.getTransaction().begin();
             try {
                 manager.createQuery(DELETE)
@@ -102,11 +87,7 @@ public class UserDao extends User{
             manager = emf.createEntityManager();
             manager.getTransaction().begin();
             try {
-                user = manager.createQuery(SELECTBYID,UserDao.class)
-                        .setParameter(1, id)
-                        .getSingleResult();
-                manager.persist(user);
-                manager.getTransaction().commit();
+                user = manager.find(UserDao.class, id);
                 manager.close();
             } catch (Exception e) {
                 Log.severe("Error al obtener usuario: " + e.getMessage());
@@ -118,7 +99,7 @@ public class UserDao extends User{
     public User getByName(String name){
         UserDao user = new UserDao(id,name,password,avatar);
         if (name!=null){
-            manager = emf.createEntityManager();
+            manager = Connect.getConnect().createEntityManager();
             manager.getTransaction().begin();
             try {
                 user = manager.createQuery(SELECTBYNAME,UserDao.class)
@@ -136,7 +117,7 @@ public class UserDao extends User{
 
     private List<User> getAllUsers(){
         List<User> users = null;
-        manager = emf.createEntityManager();
+        manager = Connect.getConnect().createEntityManager();
         manager.getTransaction().begin();
         try {
             users = manager.createQuery(SELECTALL).getResultList();

@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "comment")
+@Table(name = "comments")
 public class Comment {
 
     private static final long serialVersionUID = 1L;
@@ -14,11 +14,13 @@ public class Comment {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
-    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
     protected User UserComment;
     @Column(name = "texto")
     protected String textComment;
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_post", referencedColumnName = "id", nullable = false)
     protected Post post;
     @Column(name = "fecha")
     protected Date date;
