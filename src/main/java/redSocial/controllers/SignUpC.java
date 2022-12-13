@@ -63,7 +63,7 @@ public class SignUpC implements Initializable {
                     Log.severe("Error al cargar el avatar por defecto: "+e.getMessage());
                 }
                 Data.principalUser = user;
-                Data.principalUser.save();
+                //Data.principalUser.save();
                 App.loadScene(new Stage(), "LogIn", "RedSocial", false, false);
                 App.closeScene((Stage) anchorPane.getScene().getWindow());
             }else{

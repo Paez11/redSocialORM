@@ -29,7 +29,7 @@ public class Post implements Serializable {
     @Transient
     protected List<Comment> comments;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "id_post"), inverseJoinColumns = @JoinColumn(name = "id_user"))
     //@EmbeddedId
     //@Transient
