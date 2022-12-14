@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 public class PostDao extends Post{
 
@@ -38,9 +39,9 @@ public class PostDao extends Post{
             if(!manager.contains(post)) {
                 manager.getTransaction().begin();
                 manager.persist(post);
-                result = true;
                 manager.flush();
                 manager.getTransaction().commit();
+                result = true;
                 manager.close();
             }
         } catch (Exception e) {
@@ -92,9 +93,8 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            posts = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post ORDER BY fecha_creacion DESC").getResultList();
-            manager.persist(posts);
-            manager.getTransaction().commit();
+            Query q = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post ORDER BY fecha_creacion DESC");
+            posts = q.getResultList();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al obtener los posts: " + e.getMessage());
