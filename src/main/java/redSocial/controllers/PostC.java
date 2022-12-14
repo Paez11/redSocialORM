@@ -63,8 +63,7 @@ public class PostC implements Initializable {
     }
 
     public void setDataPost(Post p){
-        User aux2 = new User();
-        aux2 = Data.ud.getById(p.getUserName().getId());
+        User aux2 = Data.ud.getById(p.getUserName().getId());
         username.setText(aux2.getName());
         profileImage.setImage(new Image(new ByteArrayInputStream(aux2.getAvatar())));
         content.setText(p.getText());

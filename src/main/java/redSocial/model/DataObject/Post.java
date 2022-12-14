@@ -40,19 +40,16 @@ public class Post implements Serializable {
     }
 
     public Post(int id) {
-        this.id = id;
-        this.likes= new HashSet<>();
+        this.id = id;;
     }
 
     public Post(User userName, int id) {
         this.userName = userName;
         this.id = id;
-        this.likes= new HashSet<>();
     }
 
     public Post(User userName) {
         this.userName = userName;
-        this.likes= new HashSet<>();
     }
 
     public Post(User userName, int id, Date dateCreate, Date dateUpdate, String text) {
@@ -61,7 +58,6 @@ public class Post implements Serializable {
         this.dateCreate = dateCreate;
         this.dateUpdate = dateUpdate;
         this.text = text;
-        this.likes= new HashSet<>();
     }
 
     public Post(User userName, int id, Date dateCreate, Date dateUpdate, String text, List<Comment> comments, Set<User> likes) {

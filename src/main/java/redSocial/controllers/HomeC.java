@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Log;
 import redSocial.utils.Windows;
@@ -35,7 +36,7 @@ import static redSocial.controllers.Data.c;
 import static redSocial.controllers.Data.t;
 
 public class HomeC implements Initializable {
-    private List<PostDao> posts;
+    private List<Post> posts;
     List<User> followed = Data.principalUser.getFollowed();
 
     private int postNumber = 0;
@@ -131,8 +132,8 @@ public class HomeC implements Initializable {
             return ssp;
         });
     }
-    private List<PostDao> posts() {
-        List<PostDao> ls = PostDao.getAll();
+    private List<Post> posts() {
+        List<Post> ls = PostDao.getAll();
 
         return ls;
     }

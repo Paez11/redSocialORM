@@ -51,7 +51,7 @@ public class LogInC implements Initializable {
         }else{
             password = Valid.sha256(password);
             Data.principalUser = Data.ud.getByName(nickname);
-            Data.principalUser.setName(nickname);           //No se por que?, pero getByName no setea el nombre del usuario
+            Data.principalUser.setName(nickname);
             if (Data.principalUser.getName()!=null && Data.principalUser.getPassword().equals(password)){
                 //Data.principalUser.setFollowed(Data.ud.getFollowedByName());
                 App.loadScene(new Stage(), "Home", "RedSocial", false, false);
