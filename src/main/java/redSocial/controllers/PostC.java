@@ -145,7 +145,7 @@ public class PostC implements Initializable {
             }
         }else if (likes.getText().equals("no me gusta")){
             if (Data.pd.getAllLikes(Data.paux).contains(Data.principalUser)){
-                    Data.pd.deleteLike(Data.principalUser);
+                    Data.pd.deleteLike(Data.principalUser,Data.paux);
                     Data.paux.getLikes().remove(Data.principalUser);
                     likes.setText("me gusta");
             }

@@ -1,5 +1,6 @@
 package redSocial.model.DAO;
 
+import javafx.geometry.Pos;
 import redSocial.model.DataObject.Comment;
 import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
@@ -116,30 +117,14 @@ public class PostDao extends Post{
        }
        return post;
    }
-    
-   public static List<Post> getComments(User u){
-   	List<Post> posts = null;
-       manager = emf.createEntityManager();
-       manager.getTransaction().begin();
-       try {
-           posts = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+ u.getId()).getResultList();
-           manager.persist(posts);
-           manager.getTransaction().commit();
-           manager.close();
-       } catch (Exception e) {
-           Log.severe("Error al obtener los posts: " + e.getMessage());
-       }
-       return posts;
-   }    
-    
+
     public static List<Post> getAllByUser(int id){
     	List<Post> posts = null;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            posts = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+id +" ORDER BY fecha_modificacion DESC").getResultList();
-            manager.persist(posts);
-            manager.getTransaction().commit();
+            Query q = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+id +" ORDER BY fecha_modificacion DESC");
+            posts = q.getResultList();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al obtener los posts: " + e.getMessage());
@@ -147,31 +132,40 @@ public class PostDao extends Post{
         return posts;
     }
     
-    public static void saveLike(User u, Post p) {
+    public static boolean saveLike(User user, Post post) {
+        boolean result = false;
     	manager = emf.createEntityManager();
-        manager.getTransaction().begin();
-            try {
-                manager.createNativeQuery("INSERT INTO likes (id_user, id_post, id) VALUES (?,?,NULL)")
-                        .setParameter(1, u.getId())
-                        .setParameter(2, p.getId());
-                manager.getTransaction().commit();
-                manager.close();
-            } catch (Exception e) {
-                Log.severe("Error al insertar Like " + e.getMessage());
-            }
+        try {
+            manager.getTransaction().begin();
+            Post p = manager.find(Post.class, post.getId());
+            User u = manager.find(User.class, user.getId());
+            p.getLikes().add(u);
+            result = true;
+            manager.flush();
+            manager.getTransaction().commit();
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al insertar Like " + e.getMessage());
+        }
+        return result;
     }
     
-    public static void deleteLike(User u) {
+    public static boolean deleteLike(User user, Post post) {
+        boolean result = false;
     	manager = emf.createEntityManager();
-        manager.getTransaction().begin();
             try {
-                manager.createNativeQuery("DELETE FROM likes WHERE id_user=?")
-                        .setParameter(1, u.getId());
+                manager.getTransaction().begin();
+                Post p = manager.find(Post.class, post.getId());
+                User u = manager.find(User.class, user.getId());
+                p.getLikes().remove(u);
+                result = true;
+                manager.flush();
                 manager.getTransaction().commit();
                 manager.close();
             } catch (Exception e) {
-            	
+                Log.severe("Error al eliminar Like " + e.getMessage());
             }
+        return result;
     }
     
     public static Set<User> getAllLikes(Post p){
@@ -179,11 +173,8 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-        	likes = (Set<User>) manager.createNativeQuery("SELECT id_user,id_post,id FROM likes WHERE id_post=?").
-            		setParameter(1, p.getId())
-            		.getResultList();
-            manager.persist(likes);
-            manager.getTransaction().commit();
+        	Query q = manager.createNativeQuery("SELECT id_user,id_post,id FROM likes WHERE id_post=?").setParameter(1, p.getId());
+            likes = (Set<User>) q.getResultList();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al obtener los likes: " + e.getMessage());
