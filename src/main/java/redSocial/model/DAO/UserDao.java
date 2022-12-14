@@ -119,7 +119,7 @@ public class UserDao{
         */
         List<User> users = new ArrayList<User>();
             manager = emf.createEntityManager();
-            Query q = manager.createNativeQuery("SELECT id,name,avatar FROM user WHERE name = ?", User.class);
+            Query q = manager.createNativeQuery("SELECT id,name,avatar,password FROM user WHERE name = ?", User.class);
             q.setParameter(1, name);
             users = q.getResultList();
             User user = users.get(0);
