@@ -7,11 +7,13 @@ import redSocial.utils.Log;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao{
@@ -101,6 +103,7 @@ public class UserDao{
     }
 
     public static User getByName(String name){
+        /*
         User user = new User(name);
         if (name!=null){
             manager = emf.createEntityManager();
@@ -112,6 +115,15 @@ public class UserDao{
                 Log.severe("Error al obtener usuario: " + e.getMessage());
             }
         }
+        return user;
+        */
+        List<User> users = new ArrayList<User>();
+            manager = emf.createEntityManager();
+            Query q = manager.createNativeQuery("SELECT id,name,avatar FROM user WHERE name = ?", User.class);
+            q.setParameter(1, name);
+            users = q.getResultList();
+            User user = users.get(0);
+            manager.close();
         return user;
     }
 
