@@ -139,7 +139,7 @@ public class HomeC implements Initializable {
     }
 
     public void loadPosts(int p){
-        posts = new ArrayList<>(posts());
+        posts = posts();
         int columns = 0;
         int row = 1;
         try {
@@ -148,7 +148,7 @@ public class HomeC implements Initializable {
                 fxmlLoader.setLocation(getClass().getResource("Post.fxml"));
                 AnchorPane anchorPane = fxmlLoader.load();
                 PostC post = fxmlLoader.getController();
-                post.setDataPost(posts.get(i));
+                //post.setDataPost(posts.get(i));
                 if(columns == 1) {
                     columns = 0;
                     ++row;

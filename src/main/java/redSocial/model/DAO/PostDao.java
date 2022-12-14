@@ -76,7 +76,7 @@ public class PostDao extends Post{
             if(manager.contains(post)) {
                 manager.getTransaction().begin(); 
                 post.setText(post.getText());
-                post.setDateUpdate(Date.valueOf(LocalDate.now()));
+                post.setDateUpdate(post.getDateUpdate());
                 result = true;
                 manager.flush();
                 manager.getTransaction().commit();

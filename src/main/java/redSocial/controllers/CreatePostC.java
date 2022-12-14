@@ -9,6 +9,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class CreatePostC implements Initializable {
@@ -33,6 +36,7 @@ public class CreatePostC implements Initializable {
     public void submit(ActionEvent actionEvent) {
         Data.p.setUserName(Data.principalUser);
         Data.p.setText(content.getText());
+        Data.p.setDateCreate(LocalDateTime.now());
         Data.pd.save(Data.p);
         App.loadScene(new Stage(), "Home", "RedSocial", false, false);
         App.closeScene((Stage) anchorPane.getScene().getWindow());

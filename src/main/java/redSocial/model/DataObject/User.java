@@ -1,8 +1,6 @@
 package redSocial.model.DataObject;
 
-import redSocial.model.DAO.UserDao;
-import redSocial.utils.Connection.Connect;
-import redSocial.utils.Log;
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,15 +8,13 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 
-import static redSocial.utils.Connection.Connect.emf;
+
 
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private static EntityManager manager;
-    private static EntityManagerFactory emf= Persistence.createEntityManagerFactory("MySQL");
+    private static final long serialVersionUID = 1;
 
     @Id
     @Column(name = "id")
@@ -42,11 +38,9 @@ public class User implements Serializable {
 
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_followed"), inverseJoinColumns = @JoinColumn(name = "id_follower"))
-    //@Transient
     protected List<User> followed;
 
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY, mappedBy = "followed")
-    //@Transient
     protected List<User> follower;
 
     public User() {
