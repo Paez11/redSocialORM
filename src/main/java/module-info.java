@@ -11,6 +11,7 @@ module es.iesfranciscodelosrios.redSocial {
     requires java.sql;
     requires java.sql.rowset;
     requires java.persistence;
+    requires org.hibernate.orm.core;
 
 
     opens redSocial.controllers to javafx.fxml;

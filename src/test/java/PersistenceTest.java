@@ -15,7 +15,8 @@ public class PersistenceTest {
         byte[] avatar = new byte[0];
         User user = new User("test", "test", avatar);
         System.out.println(UserDao.save(user));
-        User user2 = UserDao.getById(user.getId());
+        //User user2 = UserDao.getById(user.getId());
+        User user2 = UserDao.getByName(user.getName());
         System.out.println(user);
         System.out.println(user2);
         assertEquals(user, user2);
