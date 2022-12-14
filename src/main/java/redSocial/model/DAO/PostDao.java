@@ -169,11 +169,11 @@ public class PostDao extends Post{
     }
     
     public static List<User> getAllLikes(Post p){
-    	List<User> likes = null;
+    	List<User> likes = new ArrayList<>();
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-        	Query q = manager.createNativeQuery("SELECT id_user,id_post,id FROM likes WHERE id_post=?").setParameter(1, p.getId());
+        	Query q = manager.createNativeQuery("SELECT id_user,id_post FROM likes WHERE id_post=?", User.class).setParameter(1, p.getId());
             likes = q.getResultList();
             manager.close();
         } catch (Exception e) {
