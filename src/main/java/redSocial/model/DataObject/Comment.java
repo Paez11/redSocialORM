@@ -14,7 +14,7 @@ public class Comment {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    @OneToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
     protected User UserComment;
     @Column(name = "texto")
