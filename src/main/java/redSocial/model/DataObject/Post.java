@@ -21,7 +21,7 @@ public class Post implements Serializable {
 	protected User userName;
     @Column(name = "fecha_creacion")
     protected Date dateCreate;
-    @Column(name = "fecha_modficacion")
+    @Column(name = "fecha_modificacion")
     protected Date dateUpdate;
     @Column(name = "texto")
     protected String text;
@@ -36,7 +36,6 @@ public class Post implements Serializable {
     protected Set<User> likes;
 
     public Post() {
-        this.likes= new HashSet<>();
     }
 
     public Post(int id) {

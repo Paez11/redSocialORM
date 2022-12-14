@@ -34,13 +34,12 @@ public class UserDao{
         boolean result = false;
         manager = emf.createEntityManager();
         try {
-            //user.setId(0);
             if(!manager.contains(user)) {
                 manager.getTransaction().begin();
                 manager.persist(user);
-                result = true;
                 manager.flush();
                 manager.getTransaction().commit();
+                result = true;
                 manager.close();
             }
         } catch (Exception e) {
@@ -52,12 +51,12 @@ public class UserDao{
         boolean result = false;
         manager = emf.createEntityManager();
             try {
-                if(manager.contains(user)) {
+                user = manager.merge(user);
+                if(user != null) {
                     manager.getTransaction().begin();
                     manager.remove(user);
-                    result = true;
-                    manager.flush();
                     manager.getTransaction().commit();
+                    result = true;
                     manager.close();
                 }
             } catch (Exception e) {
@@ -76,9 +75,9 @@ public class UserDao{
                 user.setPassword(user.getPassword());
                 user.setAvatar(user.getAvatar());
                 manager.merge(user);
-                result = true;
                 manager.flush();
                 manager.getTransaction().commit();
+                result = true;
                 manager.close();
             }
         } catch (Exception e) {
@@ -103,27 +102,14 @@ public class UserDao{
     }
 
     public static User getByName(String name){
-        /*
-        User user = new User(name);
-        if (name!=null){
-            manager = emf.createEntityManager();
-            manager.getTransaction().begin();
-            try {
-                user = manager.find(User.class, name);
-                manager.close();
-            } catch (Exception e) {
-                Log.severe("Error al obtener usuario: " + e.getMessage());
-            }
-        }
-        return user;
-        */
         List<User> users = new ArrayList<User>();
-            manager = emf.createEntityManager();
-            Query q = manager.createNativeQuery("SELECT id,name,avatar,password FROM user WHERE name = ?", User.class);
-            q.setParameter(1, name);
-            users = q.getResultList();
-            User user = users.get(0);
-            manager.close();
+        manager = emf.createEntityManager();
+        manager.getTransaction().begin();
+        Query q = manager.createNativeQuery("SELECT id,name,avatar,password FROM user WHERE name = ?", User.class);
+        q.setParameter(1, name);
+        users = q.getResultList();
+        User user = users.get(0);
+        manager.close();
         return user;
     }
 
