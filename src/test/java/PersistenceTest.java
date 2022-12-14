@@ -4,6 +4,9 @@ import redSocial.model.DAO.UserDao;
 import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
