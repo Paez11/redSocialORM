@@ -1,6 +1,7 @@
 package redSocial.model.DataObject;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class Comment {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
     @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
@@ -23,21 +24,34 @@ public class Comment {
     @JoinColumn(name = "id_post", referencedColumnName = "id", nullable = false)
     protected Post post;
     @Column(name = "fecha")
-    protected Date date;
+    protected LocalDateTime date;
 
-    public Comment(int id, User userComment, String textComment, Post post, Date date) {
+    public Comment() {
+    }
+
+    public Comment(int id) {
+        this.id = id;
+    }
+
+    public Comment(int id, User userComment, String textComment, Post post, LocalDateTime date) {
         this.id = id;
         this.UserComment = userComment;
         this.textComment = textComment;
         this.post = post;
         this.date = date;
     }
-    public Comment (int id){
-        this.id = id;
+
+    public Comment(User userComment, String textComment, Post post) {
+        UserComment = userComment;
+        this.textComment = textComment;
+        this.post = post;
     }
 
-    public Comment() {
-        this.id=0;
+    public Comment(User userComment, String textComment, Post post, LocalDateTime date) {
+        UserComment = userComment;
+        this.textComment = textComment;
+        this.post = post;
+        this.date = date;
     }
 
     public int getId() {
@@ -48,20 +62,20 @@ public class Comment {
         this.id = id;
     }
 
-    public String getTextComment() {
-        return textComment;
-    }
-
-    public void setTextComment(String textComment) {
-        this.textComment = textComment;
-    }
-
     public User getUserComment() {
         return UserComment;
     }
 
     public void setUserComment(User userComment) {
         UserComment = userComment;
+    }
+
+    public String getTextComment() {
+        return textComment;
+    }
+
+    public void setTextComment(String textComment) {
+        this.textComment = textComment;
     }
 
     public Post getPost() {
@@ -72,11 +86,11 @@ public class Comment {
         this.post = post;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

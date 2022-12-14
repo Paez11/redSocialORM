@@ -9,6 +9,7 @@ import redSocial.utils.Log;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class CommentDao {
     private final static String SELECTBYPOST = "SELECT id,id_user,texto,id_post,fecha FROM comments where id_post=? ORDER BY fecha DESC";
 
 
-    public static void save(Comment c) {
-        //INSERT
+    public static boolean save(Comment c) {
+        boolean result = false;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try{
@@ -39,7 +40,7 @@ public class CommentDao {
         }catch (Exception e){
             Log.severe("Error al guardar el comentario: " + e.getMessage());
         }
-
+        return result;
     }
 
     public static void delete(Comment c) {
@@ -77,9 +78,7 @@ public class CommentDao {
     }
 
     public static Comment getById(int id) {
-
         Comment comment = new Comment(id);
-
         if (id!=-1){
             manager = emf.createEntityManager();
             manager.getTransaction().begin();
@@ -94,18 +93,14 @@ public class CommentDao {
     }
 
     public static List<Comment> getAllByUser(User userByS, Post postByS){
-
-        List<Comment> result = new ArrayList<Comment>();
-
+        List<Comment> result = null;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            result = manager.createNativeQuery(SELECTBYUSERPOST)
+            Query q = manager.createNativeQuery(SELECTBYUSERPOST)
                     .setParameter(1, userByS.getId())
-                    .setParameter(2, postByS.getId())
-                    .getResultList();
-            manager.persist(result);
-            manager.getTransaction().commit();
+                    .setParameter(2, postByS.getId());
+            result = q.getResultList();
             manager.close();
         }catch (Exception e) {
                 Log.severe("Error al obtener los comentarios por usuario: " + e.getMessage());
@@ -114,24 +109,16 @@ public class CommentDao {
     }
 
     public static List<Comment> getAllByPost(Post postByS){
-
-
-        List<Comment> result = new ArrayList<Comment>();
-
+        List<Comment> result = null;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            result = manager.createNativeQuery(SELECTBYPOST)
-                    .setParameter(1, postByS.getId())
-                    .getResultList();
-            manager.persist(result);
-            manager.flush();
-            manager.getTransaction().commit();
+            Query q = manager.createNativeQuery(SELECTBYPOST).setParameter(1, postByS.getId());
+            result = q.getResultList();
             manager.close();
         }catch (Exception e) {
             Log.severe("Error al obtener los comentarios por usuario: " + e.getMessage());
         }
-
         return result;
     }
 }

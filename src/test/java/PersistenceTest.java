@@ -1,6 +1,8 @@
 import org.junit.Test;
+import redSocial.model.DAO.CommentDao;
 import redSocial.model.DAO.PostDao;
 import redSocial.model.DAO.UserDao;
+import redSocial.model.DataObject.Comment;
 import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
 
@@ -80,7 +82,6 @@ public class PersistenceTest {
 
         User prueba = UserDao.getByName("test");
         assertEquals(2,prueba.getPosts().size());
-
     }
 
     @Test
@@ -113,6 +114,50 @@ public class PersistenceTest {
         UserDao.unfollow(user,user2);
         prueba = UserDao.getByName("test");
         assertEquals(prueba.getFollowed().size(),0);
+    }
+
+    @Test
+    public void likePost(){
+        byte[] avatar = new byte[0];
+        User user = new User("test", "test", avatar);
+        User user2 = new User("test2", "test2", avatar);
+        UserDao.save(user);
+        UserDao.save(user2);
+        System.out.println(user.getId());
+        Post post = new Post(user,"test1");
+        PostDao.save(post);
+
+    }
+
+    @Test
+    public void unlikePost(){
+        byte[] avatar = new byte[0];
+        User user = new User("test", "test", avatar);
+        User user2 = new User("test2", "test2", avatar);
+        UserDao.save(user);
+        UserDao.save(user2);
+        Post post = new Post(user, "test1");
+        System.out.println(post);
+        System.out.println(PostDao.save(post));
+        PostDao.saveLike(user2,post);
+        PostDao.deleteLike(user2,post);
+        assertEquals(0,post.getLikes().size());
+    }
+
+    @Test
+    public void commentPost(){
+        byte[] avatar = new byte[0];
+        User user = new User("test", "test", avatar);
+        User user2 = new User("test2", "test2", avatar);
+        UserDao.save(user);
+        UserDao.save(user2);
+        Post post = new Post(user, "test1");
+        System.out.println(post);
+        System.out.println(PostDao.save(post));
+        Comment comment = new Comment(user2,"test",post);
+        CommentDao.save(comment);
+        Comment c = CommentDao.getById(comment.getId());
+        assertEquals(comment,c);
     }
 
 }
