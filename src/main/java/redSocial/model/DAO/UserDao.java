@@ -119,8 +119,12 @@ public class UserDao{
 
         try {
             manager.getTransaction().begin();
-
+            User u = manager.find(User.class,user.getId());
+            u.getFollowed().add(followed);
+            //TODO: MODIFICAR EL OTRO SI ENCARTA
             result = true;
+            manager.flush();
+            manager.getTransaction().commit();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al seguir usuario: " + e.getMessage());
@@ -134,8 +138,11 @@ public class UserDao{
 
         try {
             manager.getTransaction().begin();
-
+            User u = manager.find(User.class,user.getId());
+            u.getFollowed().remove(followed);
             result = true;
+            manager.flush();
+            manager.getTransaction().commit();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al dejar de seguir usuario: " + e.getMessage());

@@ -2,10 +2,8 @@ package redSocial.model.DataObject;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -20,9 +18,9 @@ public class Post implements Serializable {
     @JoinColumn(name = "id_user", referencedColumnName = "id")
 	protected User userName;
     @Column(name = "fecha_creacion")
-    protected Date dateCreate;
+    protected LocalDateTime dateCreate;
     @Column(name = "fecha_modificacion")
-    protected Date dateUpdate;
+    protected LocalDateTime dateUpdate;
     @Column(name = "texto")
     protected String text;
 
@@ -31,8 +29,6 @@ public class Post implements Serializable {
 
 	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "id_post"), inverseJoinColumns = @JoinColumn(name = "id_user"))
-    //@EmbeddedId
-    //@Transient
     protected Set<User> likes;
 
     public Post() {
@@ -47,11 +43,16 @@ public class Post implements Serializable {
         this.id = id;
     }
 
+    public Post(User userName, String text) {
+        this.userName = userName;
+        this.text = text;
+    }
+
     public Post(User userName) {
         this.userName = userName;
     }
 
-    public Post(User userName, int id, Date dateCreate, Date dateUpdate, String text) {
+    public Post(User userName, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text) {
         this.userName = userName;
         this.id = id;
         this.dateCreate = dateCreate;
@@ -59,7 +60,7 @@ public class Post implements Serializable {
         this.text = text;
     }
 
-    public Post(User userName, int id, Date dateCreate, Date dateUpdate, String text, List<Comment> comments, Set<User> likes) {
+    public Post(User userName, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text, List<Comment> comments, Set<User> likes) {
         this.userName = userName;
         this.id = id;
         this.dateCreate = dateCreate;
@@ -85,19 +86,19 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    public Date getDateCreate() {
+    public LocalDateTime getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(Date dateCreate) {
+    public void setDateCreate(LocalDateTime dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public Date getDateUpdate() {
+    public LocalDateTime getDateUpdate() {
         return dateUpdate;
     }
 
-    public void setDateUpdate(Date dateUpdate) {
+    public void setDateUpdate(LocalDateTime dateUpdate) {
         this.dateUpdate = dateUpdate;
     }
 
@@ -114,7 +115,10 @@ public class Post implements Serializable {
     }
 
     public void setComments(List<Comment> comments) {
-        this.comments = comments;
+        if (comments == null) return;
+        for (Comment c: comments) {
+            this.addUserComments(c);
+        };
     }
 
     public Set<User> getLikes() {
@@ -123,6 +127,19 @@ public class Post implements Serializable {
 
     public void setLikes(Set<User> likes) {
         this.likes = likes;
+    }
+
+    public boolean addUserComments(Comment c) {
+        boolean result = false;
+        if (this.comments == null) {
+            this.comments = new ArrayList<>();
+            this.comments.add(c);
+            result = true;
+        } else {
+            this.comments.add(c);
+            result = true;
+        }
+        return result;
     }
 
     @Override
