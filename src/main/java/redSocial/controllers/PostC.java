@@ -79,12 +79,10 @@ public class PostC implements Initializable {
         likesLabel.setText(String.valueOf(Data.p.getLikes().size()));
 
         if (p.getDateUpdate()!=null){
-            String format = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateUpdate());
-            date.setText(format);
+            date.setText(p.getDateUpdate().toString());
             editLabel.setVisible(true);
         }else {
-            String format = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateCreate());
-            date.setText(format);
+            date.setText(p.getDateCreate().toString());
         }
         this.p = p;
         if (Data.principalUser.getId()==p.getUserName().getId()) {
