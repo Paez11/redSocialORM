@@ -94,7 +94,7 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            Query q = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post ORDER BY fecha_creacion DESC");
+            Query q = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post ORDER BY fecha_creacion DESC", Post.class);
             posts = q.getResultList();
             manager.close();
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            Query q = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+id +" ORDER BY fecha_modificacion DESC");
+            Query q = manager.createNativeQuery("SELECT id,id_user,fecha_creacion,fecha_modificacion,texto FROM post WHERE id_user="+id +" ORDER BY fecha_modificacion DESC",Post.class);
             posts = q.getResultList();
             manager.close();
         } catch (Exception e) {
@@ -168,13 +168,13 @@ public class PostDao extends Post{
         return result;
     }
     
-    public static Set<User> getAllLikes(Post p){
-    	Set<User> likes = null;
+    public static List<User> getAllLikes(Post p){
+    	List<User> likes = null;
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
         	Query q = manager.createNativeQuery("SELECT id_user,id_post,id FROM likes WHERE id_post=?").setParameter(1, p.getId());
-            likes = (Set<User>) q.getResultList();
+            likes = q.getResultList();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al obtener los likes: " + e.getMessage());

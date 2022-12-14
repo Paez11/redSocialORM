@@ -11,11 +11,11 @@ import javax.persistence.*;
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    protected int id;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    protected int id = -1;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user")
 	protected User userName;
     @Column(name = "fecha_creacion")
     protected LocalDateTime dateCreate;
@@ -27,9 +27,9 @@ public class Post implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
     protected List<Comment> comments;
 
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "id_post"), inverseJoinColumns = @JoinColumn(name = "id_user"))
-    protected Set<User> likes;
+    protected List<User> likes;
 
     public Post() {
     }
@@ -60,7 +60,7 @@ public class Post implements Serializable {
         this.text = text;
     }
 
-    public Post(User userName, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text, List<Comment> comments, Set<User> likes) {
+    public Post(User userName, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text, List<Comment> comments, List<User> likes) {
         this.userName = userName;
         this.id = id;
         this.dateCreate = dateCreate;
@@ -121,11 +121,11 @@ public class Post implements Serializable {
         };
     }
 
-    public Set<User> getLikes() {
+    public List<User> getLikes() {
         return likes;
     }
 
-    public void setLikes(Set<User> likes) {
+    public void setLikes(List<User> likes) {
         this.likes = likes;
     }
 

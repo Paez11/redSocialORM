@@ -120,11 +120,10 @@ public class PersistenceTest {
         User user2 = new User("test2", "test2", avatar);
         UserDao.save(user);
         UserDao.save(user2);
-        Post post = new Post(user);
+        System.out.println(user.getId());
+        Post post = new Post(user,"test1");
         PostDao.save(post);
-        //Post prueba = PostDao.getById(post.getId());
-        PostDao.saveLike(user2,post);
-        assertEquals(1,post.getLikes().size());
+
     }
 
     @Test
