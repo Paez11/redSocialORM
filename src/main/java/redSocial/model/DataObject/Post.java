@@ -16,7 +16,7 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected int id;
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", referencedColumnName = "id")
 	protected User userName;
     @Column(name = "fecha_creacion")
@@ -26,10 +26,10 @@ public class Post implements Serializable {
     @Column(name = "texto")
     protected String text;
 
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
     protected List<Comment> comments;
 
-	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "id_post"), inverseJoinColumns = @JoinColumn(name = "id_user"))
     //@EmbeddedId
     //@Transient

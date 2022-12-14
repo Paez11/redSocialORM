@@ -31,22 +31,21 @@ public class User implements Serializable {
     @Column(name = "avatar", columnDefinition = "LONGBLOB")
     protected byte[] avatar;
 
-    @Transient
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "userName")
     protected List<Post> posts;
 
     @Transient
     protected List<Comment> comments;
 
-    @Transient
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "likes")
     protected List<Post> likes;
 
     @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_followed"), inverseJoinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_followed"), inverseJoinColumns = @JoinColumn(name = "id_follower"))
     //@Transient
     protected List<User> followed;
 
-    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    @JoinTable(name = "follower", joinColumns = @JoinColumn(name = "id_follower"), inverseJoinColumns = @JoinColumn(name = "id"))
+    @ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY, mappedBy = "followed")
     //@Transient
     protected List<User> follower;
 
