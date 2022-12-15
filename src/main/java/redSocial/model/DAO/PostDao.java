@@ -38,14 +38,16 @@ public class PostDao extends Post{
         boolean result = false;
         manager = emf.createEntityManager();
         try {
-            if(!manager.contains(post)) {
-                manager.getTransaction().begin();
-                manager.persist(post);
-                manager.flush();
-                manager.getTransaction().commit();
-                result = true;
-                manager.close();
-            }
+            post.setId(0);
+            manager.getTransaction().begin();
+            System.out.println(post);
+            Post mock = new Post(post.getUser(),post.getText());
+            mock.setDateCreate(post.getDateCreate());
+            manager.persist(mock);
+            manager.flush();
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
         } catch (Exception e) {
             Log.severe("Error al insertar el post " + e.getMessage());
         }

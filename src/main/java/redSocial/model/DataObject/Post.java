@@ -1,7 +1,6 @@
 package redSocial.model.DataObject;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -16,7 +15,7 @@ public class Post implements Serializable {
     protected int id = -1;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
-	protected User userName;
+	protected User user;
     @Column(name = "fecha_creacion")
     protected LocalDateTime dateCreate;
     @Column(name = "fecha_modificacion")
@@ -38,30 +37,30 @@ public class Post implements Serializable {
         this.id = id;;
     }
 
-    public Post(User userName, int id) {
-        this.userName = userName;
+    public Post(User user, int id) {
+        this.user = user;
         this.id = id;
     }
 
-    public Post(User userName, String text) {
-        this.userName = userName;
+    public Post(User user, String text) {
+        this.user = user;
         this.text = text;
     }
 
-    public Post(User userName) {
-        this.userName = userName;
+    public Post(User user) {
+        this.user = user;
     }
 
-    public Post(User userName, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text) {
-        this.userName = userName;
+    public Post(User user, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text) {
+        this.user = user;
         this.id = id;
         this.dateCreate = dateCreate;
         this.dateUpdate = dateUpdate;
         this.text = text;
     }
 
-    public Post(User userName, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text, List<Comment> comments, List<User> likes) {
-        this.userName = userName;
+    public Post(User user, int id, LocalDateTime dateCreate, LocalDateTime dateUpdate, String text, List<Comment> comments, List<User> likes) {
+        this.user = user;
         this.id = id;
         this.dateCreate = dateCreate;
         this.dateUpdate = dateUpdate;
@@ -70,12 +69,12 @@ public class Post implements Serializable {
         this.likes = likes;
     }
 
-    public User getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserName(User userName) {
-        this.userName = userName;
+    public void setUser(User userName) {
+        this.user = userName;
     }
 
     public int getId() {
@@ -140,6 +139,19 @@ public class Post implements Serializable {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", userName=" + user +
+                ", dateCreate=" + dateCreate +
+                ", dateUpdate=" + dateUpdate +
+                ", text='" + text + '\'' +
+                ", comments=" + comments +
+                ", likes=" + likes +
+                '}';
     }
 
     @Override

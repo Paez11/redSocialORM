@@ -16,7 +16,7 @@ import redSocial.utils.Log;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,7 +42,7 @@ public class CommentsC  implements Initializable {
     }
 
     public void loadComments(){
-        comments= new ArrayList<>(comments());
+        comments= comments();
         int columns=0;
         int rows=1;
 
@@ -70,10 +70,13 @@ public class CommentsC  implements Initializable {
     private void publishComment(){
         Comment cd = new Comment();
         if (!CommentText.getText().isEmpty()) {
+            System.out.println("Comentario: " + CommentText.getText());
             cd.setTextComment(CommentText.getText());
-            cd.setUserComment(Data.principalUser);
+            cd.setUser(Data.principalUser);
+            cd.setDate(LocalDateTime.now());
             CommentText.clear();
             cd.setPost(Data.p);
+            System.out.println(cd);
             CommentDao.save(cd);
             refreshComments();
         }

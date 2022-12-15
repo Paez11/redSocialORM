@@ -7,11 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import redSocial.model.DataObject.Post;
 
 import java.net.URL;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class CreatePostC implements Initializable {
@@ -34,7 +33,8 @@ public class CreatePostC implements Initializable {
     }
 
     public void submit(ActionEvent actionEvent) {
-        Data.p.setUserName(Data.principalUser);
+        Data.p = new Post();
+        Data.p.setUser(Data.principalUser);
         Data.p.setText(content.getText());
         Data.p.setDateCreate(LocalDateTime.now());
         Data.pd.save(Data.p);

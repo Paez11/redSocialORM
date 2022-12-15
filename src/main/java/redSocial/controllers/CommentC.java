@@ -8,12 +8,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import redSocial.model.DAO.CommentDao;
-import redSocial.model.DAO.UserDao;
 import redSocial.model.DataObject.Comment;
 import redSocial.model.DataObject.User;
 
 import java.io.ByteArrayInputStream;
-import java.text.SimpleDateFormat;
 
 public class CommentC {
 
@@ -37,15 +35,14 @@ public class CommentC {
         User u= Data.ud.getByName(cd.getTextComment());
         name.setText(u.getName());
         comment2.setText(comment.getTextComment());
-        String format = new SimpleDateFormat("dd/MM/yyyy").format(comment.getDate());
-        date.setText(format);
+        date.setText(comment.getDate().toString());
         this.c=cd;
-        Data.aux= this.c.getUserComment();
+        Data.aux= this.c.getUser();
         profileImage.setImage(new Image(new ByteArrayInputStream(Data.aux.getAvatar())));
     }
 
     public void switchProfile(){
-        Data.aux= this.c.getUserComment();
+        Data.aux= this.c.getUser();
         Data.caux = this.c;
 
         if (Data.principalUser.getId()==this.c.getId()) {
