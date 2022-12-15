@@ -4,6 +4,7 @@ package redSocial.model.DataObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -216,12 +217,12 @@ public class User implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", posts=" + posts +
-                ", comments=" + comments +
-                ", likes=" + likes +
-                ", followed=" + followed +
-                ", follower=" + follower +
+                ", avatar=" + Arrays.toString(avatar) +
+                ", posts=" +
+                ", comments=" +
+                ", likes=" +
+                ", followed=" +
+                ", follower=" +
                 '}';
     }
 

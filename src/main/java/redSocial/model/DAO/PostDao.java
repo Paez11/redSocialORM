@@ -40,7 +40,6 @@ public class PostDao extends Post{
         try {
             post.setId(0);
             manager.getTransaction().begin();
-            System.out.println(post);
             Post mock = new Post(post.getUser(),post.getText());
             mock.setDateCreate(post.getDateCreate());
             manager.persist(mock);
@@ -57,13 +56,17 @@ public class PostDao extends Post{
     public static boolean delete(Post post) {
         boolean result = false;
         manager = emf.createEntityManager();
-        post= manager.find(Post.class,post.getId());
+
             try {
+
                 manager.getTransaction().begin();
-                manager.remove(post);
-                result = true;
+                Post aux= manager.find(Post.class,post.getId());
+                User u = manager.find(User.class,post.getUser().getId());
+                u.getPosts().remove(post);
+                manager.remove(aux);
                 manager.flush();
                 manager.getTransaction().commit();
+                result = true;
                 manager.close();
             } catch (Exception e) {
                 Log.severe("Error al eliminar el post: " + e.getMessage());

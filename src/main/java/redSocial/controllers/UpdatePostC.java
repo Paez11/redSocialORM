@@ -46,6 +46,7 @@ public class UpdatePostC implements Initializable {
     }
 
     public void cancel(ActionEvent actionEvent) {
+        App.loadScene(new Stage(), "Home", "RedSocial", false, false);
         App.closeScene((Stage) anchorPane.getScene().getWindow());
     }
 

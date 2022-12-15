@@ -50,10 +50,10 @@ public class LogInC implements Initializable {
             Windows.mostrarAlerta("Error","Error","Rellene todos los campos");
         }else{
             password = Valid.sha256(password);
-            Data.principalUser = Data.ud.getByName(nickname);
-            Data.principalUser.setName(nickname);
-            if (Data.principalUser.getName()!=null && Data.principalUser.getPassword().equals(password)){
+            Data.aux = Data.ud.getByName(nickname);
+            if (Data.ud.getByName(nickname)!=null && Data.aux.getPassword().equals(password)){
                 //Data.principalUser.setFollowed(Data.ud.getFollowedByName());
+                Data.principalUser = Data.ud.getByName(nickname);
                 App.loadScene(new Stage(), "Home", "RedSocial", false, false);
                 App.closeScene((Stage) anchorPane.getScene().getWindow());
             }else{
