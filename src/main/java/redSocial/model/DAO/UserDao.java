@@ -36,14 +36,14 @@ public class UserDao{
         boolean result = false;
         manager = emf.createEntityManager();
         try {
-            if(!manager.contains(user)) {
-                manager.getTransaction().begin();
-                manager.persist(user);
-                manager.flush();
-                manager.getTransaction().commit();
-                result = true;
-                manager.close();
-            }
+            user.setId(0);
+            manager.getTransaction().begin();
+            User mock = new User(user.getName(), user.getPassword(), user.getAvatar());
+            manager.persist(mock);
+            manager.flush();
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
         } catch (Exception e) {
             Log.severe("Error al insertar usuario: " + e.getMessage());
         }
@@ -73,17 +73,30 @@ public class UserDao{
         manager = emf.createEntityManager();
         User aux = manager.find(User.class,user.getId());
         try {
-            if(manager.contains(aux)) {
-                manager.getTransaction().begin();
-                aux.setName(user.getName());
-                aux.setPassword(user.getPassword());
-                File imageBlob = new File(new String(user.getAvatar()));
-                FileInputStream in = new FileInputStream(imageBlob);
-                aux.setAvatar(in.readAllBytes());
-                manager.getTransaction().commit();
-                result = true;
-                manager.close();
-            }
+            manager.getTransaction().begin();
+            aux.setName(user.getName());
+            aux.setPassword(user.getPassword());
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
+        } catch (Exception e) {
+            Log.severe("Error al actualizar usuario: " + e.getMessage());
+        }
+        return result;
+    }
+
+    public static boolean updateAvatar(User user) {
+        boolean result = false;
+        manager = emf.createEntityManager();
+        User aux = manager.find(User.class,user.getId());
+        try {
+            manager.getTransaction().begin();
+            File imageBlob = new File(new String(user.getAvatar()));
+            FileInputStream in = new FileInputStream(imageBlob);
+            aux.setAvatar(in.readAllBytes());
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
         } catch (Exception e) {
             Log.severe("Error al actualizar usuario: " + e.getMessage());
         }
@@ -116,7 +129,6 @@ public class UserDao{
         manager.close();
         return user;
     }
-
     public static boolean follow(User user, User followed){
         boolean result = false;
         manager = emf.createEntityManager();

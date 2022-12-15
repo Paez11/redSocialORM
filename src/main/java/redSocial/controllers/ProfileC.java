@@ -195,7 +195,7 @@ public class ProfileC implements Initializable {
 
         if (path!=null){
             Data.principalUser.setAvatar(path.getBytes());
-            Data.ud.update(Data.principalUser);
+            Data.ud.updateAvatar(Data.principalUser);
             Windows.mostrarInfo("editPhoto","Foto","Fhoto editada correctamente");
         }else {
             Windows.mostrarInfo("editPhoto","Foto","Foto no seleccionada");
