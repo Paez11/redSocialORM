@@ -32,7 +32,7 @@ public class CommentC {
 
     public void setData(Comment comment){
         Comment cd= CommentDao.getById(comment.getId());
-        User u= Data.ud.getByName(cd.getTextComment());
+        User u= Data.ud.getByName(cd.getUser().getName());
         name.setText(u.getName());
         comment2.setText(comment.getTextComment());
         date.setText(comment.getDate().toString());

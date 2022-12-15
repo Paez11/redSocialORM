@@ -119,9 +119,7 @@ public class PostC implements Initializable {
     public void openComments(){
         Data.p = this.p;
         Platform.runLater(() -> {
-            System.out.println("Abriendo comentarios");
             App.loadScene(new Stage(), "Comments", "RedSocial", true, false);
-            System.out.println("Comentarios abiertos");
         });
     }
 
