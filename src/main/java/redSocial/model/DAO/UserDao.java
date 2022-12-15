@@ -50,6 +50,7 @@ public class UserDao{
     public static boolean delete(User user) {
         boolean result = false;
         manager = emf.createEntityManager();
+        manager.find(User.class,user.getId());
             try {
                 user = manager.merge(user);
                 if(user != null) {
@@ -68,6 +69,7 @@ public class UserDao{
     public static boolean update(User user) {
         boolean result = false;
         manager = emf.createEntityManager();
+        manager.find(User.class,user.getId());
         try {
             if(manager.contains(user)) {
                 manager.getTransaction().begin();
