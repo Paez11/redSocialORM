@@ -1,5 +1,7 @@
 package redSocial.model.DAO;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Connection.Connect;
 import redSocial.utils.Log;
@@ -69,15 +71,14 @@ public class UserDao{
     public static boolean update(User user) {
         boolean result = false;
         manager = emf.createEntityManager();
-        manager.find(User.class,user.getId());
+        User aux = manager.find(User.class,user.getId());
         try {
-            if(manager.contains(user)) {
+            if(manager.contains(aux)) {
                 manager.getTransaction().begin();
-                user.setName(user.getName());
-                user.setPassword(user.getPassword());
-                user.setAvatar(user.getAvatar());
-                manager.merge(user);
-                manager.flush();
+                aux.setName(user.getName());
+                aux.setPassword(user.getPassword());
+                Blob blob = Hibernate.getLobCreator((Session) manager).createBlob(user.getAvatar());
+                aux.setAvatar(blob.getBytes(1,user.getAvatar().length));
                 manager.getTransaction().commit();
                 result = true;
                 manager.close();

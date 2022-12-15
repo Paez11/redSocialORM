@@ -1,5 +1,6 @@
 package redSocial.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -9,14 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import redSocial.model.DAO.PostDao;
-import redSocial.model.DAO.UserDao;
 import redSocial.model.DataObject.Post;
 import redSocial.model.DataObject.User;
 import redSocial.utils.Windows;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 public class PostC implements Initializable {
@@ -64,7 +63,7 @@ public class PostC implements Initializable {
     }
 
     public void setDataPost(Post p){
-        User aux2 = Data.ud.getById(p.getUserName().getId());
+        User aux2 = Data.ud.getById(p.getUser().getId());
         username.setText(aux2.getName());
         profileImage.setImage(new Image(new ByteArrayInputStream(aux2.getAvatar())));
         content.setText(p.getText());
@@ -86,7 +85,7 @@ public class PostC implements Initializable {
             date.setText(p.getDateCreate().toString());
         }
         this.p = p;
-        if (Data.principalUser.getId()==p.getUserName().getId()) {
+        if (Data.principalUser.getId()==p.getUser().getId()) {
             delete.setVisible(true);
             update.setVisible(true);
         }else{
@@ -96,7 +95,7 @@ public class PostC implements Initializable {
     }
 
     public void deletePost(){
-        if (Data.principalUser.getId()==p.getUserName().getId()){
+        if (Data.principalUser.getId()==p.getUser().getId()){
         	PostDao pd= new PostDao();
             pd.delete(p);
             Windows.mostrarAlerta("Eliminar","Eliminar","post eliminado");
@@ -108,7 +107,7 @@ public class PostC implements Initializable {
     }
 
     public void updatePost(){
-        if (Data.principalUser.getId()==p.getUserName().getId()){
+        if (Data.principalUser.getId()==p.getUser().getId()){
             Data.paux = p;
             App.loadScene(new Stage(), "UpdatePost", "RedSocial", true, false);
             App.closeScene((Stage) anchorPane.getScene().getWindow());
@@ -119,11 +118,15 @@ public class PostC implements Initializable {
 
     public void openComments(){
         Data.p = this.p;
-        App.loadScene(new Stage(), "Comments", "RedSocial", true, false);
+        Platform.runLater(() -> {
+            System.out.println("Abriendo comentarios");
+            App.loadScene(new Stage(), "Comments", "RedSocial", true, false);
+            System.out.println("Comentarios abiertos");
+        });
     }
 
     public void switchProfile(){
-        Data.aux= this.p.getUserName();
+        Data.aux= this.p.getUser();
         Data.p = this.p;
         if (Data.principalUser.getId()==Data.aux.getId()) {
             App.loadScene(new Stage(), "Profile", "RedSocial", false, false);

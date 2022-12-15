@@ -38,14 +38,16 @@ public class PostDao extends Post{
         boolean result = false;
         manager = emf.createEntityManager();
         try {
-            if(!manager.contains(post)) {
-                manager.getTransaction().begin();
-                manager.persist(post);
-                manager.flush();
-                manager.getTransaction().commit();
-                result = true;
-                manager.close();
-            }
+            post.setId(0);
+            manager.getTransaction().begin();
+            System.out.println(post);
+            Post mock = new Post(post.getUser(),post.getText());
+            mock.setDateCreate(post.getDateCreate());
+            manager.persist(mock);
+            manager.flush();
+            manager.getTransaction().commit();
+            result = true;
+            manager.close();
         } catch (Exception e) {
             Log.severe("Error al insertar el post " + e.getMessage());
         }
@@ -153,13 +155,21 @@ public class PostDao extends Post{
     
     public static boolean deleteLike(User user, Post post) {
         boolean result = false;
+        int cont=0;
+        List<User> laux= new ArrayList<>();
     	manager = emf.createEntityManager();
             try {
                 Post p = manager.find(Post.class, post.getId());
                 User u = manager.find(User.class, user.getId());
                 manager.getTransaction().begin();
-                p.getLikes().remove(u);
-                manager.persist(post);
+                while(p.getLikes().size()>cont){
+                    if (!p.getLikes().get(cont).getName().equals(u.getName())){
+                        laux.add(u);
+                    }
+                    cont++;
+                }
+                p.setLikes(laux);
+                manager.persist(p);
                 result = true;
                 manager.flush();
                 manager.getTransaction().commit();

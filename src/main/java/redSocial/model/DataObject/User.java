@@ -24,10 +24,11 @@ public class User implements Serializable {
     protected String name;
     @Column(name = "password")
     protected String password;
+    @Lob
     @Column(name = "avatar", columnDefinition = "LONGBLOB")
     protected byte[] avatar;
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "userName")
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "user")
     protected List<Post> posts;
 
     @Transient

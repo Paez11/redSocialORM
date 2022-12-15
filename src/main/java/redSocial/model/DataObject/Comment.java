@@ -2,7 +2,6 @@ package redSocial.model.DataObject;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -15,9 +14,9 @@ public class Comment {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected int id;
-    @ManyToOne(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
-    protected User UserComment;
+    protected User user;
     @Column(name = "texto")
     protected String textComment;
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -33,22 +32,22 @@ public class Comment {
         this.id = id;
     }
 
-    public Comment(int id, User userComment, String textComment, Post post, LocalDateTime date) {
+    public Comment(int id, User user, String textComment, Post post, LocalDateTime date) {
         this.id = id;
-        this.UserComment = userComment;
+        this.user = user;
         this.textComment = textComment;
         this.post = post;
         this.date = date;
     }
 
-    public Comment(User userComment, String textComment, Post post) {
-        UserComment = userComment;
+    public Comment(User user, String textComment, Post post) {
+        this.user = user;
         this.textComment = textComment;
         this.post = post;
     }
 
-    public Comment(User userComment, String textComment, Post post, LocalDateTime date) {
-        UserComment = userComment;
+    public Comment(User user, String textComment, Post post, LocalDateTime date) {
+        this.user = user;
         this.textComment = textComment;
         this.post = post;
         this.date = date;
@@ -62,12 +61,12 @@ public class Comment {
         this.id = id;
     }
 
-    public User getUserComment() {
-        return UserComment;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserComment(User userComment) {
-        UserComment = userComment;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getTextComment() {
@@ -99,11 +98,22 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return id == comment.id && Objects.equals(UserComment, comment.UserComment) && Objects.equals(post, comment.post);
+        return id == comment.id && Objects.equals(user, comment.user) && Objects.equals(post, comment.post);
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", UserComment=" + user.getName() +
+                ", textComment='" + textComment + '\'' +
+                ", post=" + post.getId() +
+                ", date=" + date +
+                '}';
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, UserComment, post);
+        return Objects.hash(id, user, post);
     }
 }

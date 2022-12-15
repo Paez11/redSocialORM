@@ -28,15 +28,16 @@ public class CommentDao {
     public static boolean save(Comment c) {
         boolean result = false;
         manager = emf.createEntityManager();
-        manager.getTransaction().begin();
         try{
-            if(!manager.contains(c)) {
                 manager.getTransaction().begin();
-                manager.persist(c);
+                Post aux = manager.find(Post.class,c.getPost().getId());
+                User u = manager.find(User.class,c.getUser().getId());
+                Comment cm = new Comment(u,c.getTextComment(),aux,c.getDate());
+                manager.persist(cm);
                 manager.flush();
                 manager.getTransaction().commit();
                 manager.close();
-            }
+
         }catch (Exception e){
             Log.severe("Error al guardar el comentario: " + e.getMessage());
         }
@@ -97,7 +98,7 @@ public class CommentDao {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            Query q = manager.createNativeQuery(SELECTBYUSERPOST)
+            Query q = manager.createNativeQuery(SELECTBYUSERPOST,Comment.class)
                     .setParameter(1, userByS.getId())
                     .setParameter(2, postByS.getId());
             result = q.getResultList();
@@ -113,7 +114,7 @@ public class CommentDao {
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-            Query q = manager.createNativeQuery(SELECTBYPOST).setParameter(1, postByS.getId());
+            Query q = manager.createNativeQuery(SELECTBYPOST,Comment.class).setParameter(1, postByS.getId());
             result = q.getResultList();
             manager.close();
         }catch (Exception e) {
