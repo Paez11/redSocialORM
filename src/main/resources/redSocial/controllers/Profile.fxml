@@ -109,7 +109,7 @@
                      <graphic>
                         <ImageView accessibleRole="BUTTON" fitHeight="42.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../user.png" />
+                              <Image url="@../../icons/profile.png" />
                            </image>
                            <cursor>
                               <Cursor fx:constant="HAND" />

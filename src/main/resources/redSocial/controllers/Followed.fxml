@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="822.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="redSocial.controllers.FollowedC">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="822.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="redSocial.controllers.FollowedC">
     <left>
         <VBox prefHeight="600.0" prefWidth="150.0" styleClass="menuColor" BorderPane.alignment="CENTER">
             <children>
@@ -107,7 +107,7 @@
                             <graphic>
                                 <ImageView accessibleRole="BUTTON" fitHeight="42.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../user.png" />
+                                        <Image url="@../../icons/profile.png" />
                                     </image>
                                     <cursor>
                                         <Cursor fx:constant="HAND" />
