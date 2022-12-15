@@ -59,14 +59,12 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         post= manager.find(Post.class,post.getId());
             try {
-                if(manager.contains(post)) {
-                    manager.getTransaction().begin();
-                    manager.remove(post);
-                    result = true;
-                    manager.flush();
-                    manager.getTransaction().commit();
-                    manager.close();
-                }
+                manager.getTransaction().begin();
+                manager.remove(post);
+                result = true;
+                manager.flush();
+                manager.getTransaction().commit();
+                manager.close();
             } catch (Exception e) {
                 Log.severe("Error al eliminar el post: " + e.getMessage());
             }
