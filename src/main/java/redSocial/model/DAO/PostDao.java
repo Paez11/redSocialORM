@@ -9,6 +9,7 @@ import redSocial.utils.Log;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -73,15 +74,13 @@ public class PostDao extends Post{
     public static boolean update(Post post) {
         boolean result = false;
         manager = emf.createEntityManager();
-        post= manager.find(Post.class,post.getId());
-        manager.getTransaction().begin();
+        Post apost= manager.find(Post.class,post.getId());
         try {
-            if(manager.contains(post)) {
+            if(manager.contains(apost)) {
                 manager.getTransaction().begin(); 
-                post.setText(post.getText());
-                post.setDateUpdate(post.getDateUpdate());
+                apost.setText(post.getText());
+                apost.setDateUpdate(LocalDateTime.now());
                 result = true;
-                manager.flush();
                 manager.getTransaction().commit();
                 manager.close();
             }
