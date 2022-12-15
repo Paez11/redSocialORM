@@ -77,8 +77,9 @@ public class UserDao{
                 manager.getTransaction().begin();
                 aux.setName(user.getName());
                 aux.setPassword(user.getPassword());
-                Blob blob = Hibernate.getLobCreator((Session) manager).createBlob(user.getAvatar());
-                aux.setAvatar(blob.getBytes(1,user.getAvatar().length));
+                File imageBlob = new File(new String(user.getAvatar()));
+                FileInputStream in = new FileInputStream(imageBlob);
+                aux.setAvatar(in.readAllBytes());
                 manager.getTransaction().commit();
                 result = true;
                 manager.close();
