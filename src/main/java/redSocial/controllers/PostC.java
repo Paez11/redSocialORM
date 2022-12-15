@@ -57,6 +57,7 @@ public class PostC implements Initializable {
     private ImageView profileImage;
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         editLabel.setVisible(false);
@@ -70,7 +71,7 @@ public class PostC implements Initializable {
         Data.p=p;
         Data.p.setLikes(Data.pd.getAllLikes(Data.p));
         if (Data.p.getLikes()!=null){
-            if (Data.p.getLikes().contains(Data.principalUser)){
+            if (Data.pd.likePost(Data.p,Data.principalUser)){
                 likes.setText("no me gusta");
             }else{
                 likes.setText("me gusta");
@@ -79,12 +80,10 @@ public class PostC implements Initializable {
         likesLabel.setText(String.valueOf(Data.p.getLikes().size()));
 
         if (p.getDateUpdate()!=null){
-            String format = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateUpdate());
-            date.setText(format);
+            date.setText(p.getDateUpdate().toString());
             editLabel.setVisible(true);
         }else {
-            String format = new SimpleDateFormat("dd/MM/yyyy").format(p.getDateCreate());
-            date.setText(format);
+            date.setText(p.getDateCreate().toString());
         }
         this.p = p;
         if (Data.principalUser.getId()==p.getUserName().getId()) {
@@ -138,17 +137,15 @@ public class PostC implements Initializable {
     public void likePost(){
         Data.paux= this.p;
         if (likes.getText().equals("me gusta")){
-            if (!Data.pd.getAllLikes(Data.paux).contains(Data.principalUser)){
                 Data.paux.getLikes().add(Data.principalUser);
                 Data.pd.saveLike(Data.principalUser,Data.paux);
                 likes.setText("no me gusta");
-            }
+                likesLabel.setText(String.valueOf(Data.paux.getLikes().size()));
         }else if (likes.getText().equals("no me gusta")){
-            if (Data.pd.getAllLikes(Data.paux).contains(Data.principalUser)){
                     Data.pd.deleteLike(Data.principalUser,Data.paux);
                     Data.paux.getLikes().remove(Data.principalUser);
                     likes.setText("me gusta");
-            }
+                    likesLabel.setText(String.valueOf(Data.paux.getLikes().size()));
         }
     }
 }

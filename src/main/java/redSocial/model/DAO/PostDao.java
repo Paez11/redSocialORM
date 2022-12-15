@@ -54,6 +54,7 @@ public class PostDao extends Post{
     public static boolean delete(Post post) {
         boolean result = false;
         manager = emf.createEntityManager();
+        post= manager.find(Post.class,post.getId());
             try {
                 if(manager.contains(post)) {
                     manager.getTransaction().begin();
@@ -72,6 +73,7 @@ public class PostDao extends Post{
     public static boolean update(Post post) {
         boolean result = false;
         manager = emf.createEntityManager();
+        post= manager.find(Post.class,post.getId());
         manager.getTransaction().begin();
         try {
             if(manager.contains(post)) {
@@ -154,10 +156,11 @@ public class PostDao extends Post{
         boolean result = false;
     	manager = emf.createEntityManager();
             try {
-                manager.getTransaction().begin();
                 Post p = manager.find(Post.class, post.getId());
                 User u = manager.find(User.class, user.getId());
+                manager.getTransaction().begin();
                 p.getLikes().remove(u);
+                manager.persist(post);
                 result = true;
                 manager.flush();
                 manager.getTransaction().commit();
@@ -173,12 +176,26 @@ public class PostDao extends Post{
         manager = emf.createEntityManager();
         manager.getTransaction().begin();
         try {
-        	Query q = manager.createNativeQuery("SELECT id_user,id_post FROM likes WHERE id_post=?", User.class).setParameter(1, p.getId());
-            likes = q.getResultList();
+            p = manager.find(Post.class, p.getId());
+            likes = p.getLikes();
             manager.close();
         } catch (Exception e) {
             Log.severe("Error al obtener los likes: " + e.getMessage());
         }
         return likes;	
+    }
+
+    public boolean likePost(Post p, User u) {
+        boolean result = false;
+        manager = emf.createEntityManager();
+        p = manager.find(Post.class, p.getId());
+        p.getLikes().size();
+        for(User user : p.getLikes()) {
+            if(user.getId()==u.getId()) {
+                result = true;
+            }
+        }
+        manager.close();
+        return result;
     }
 }
